@@ -10,13 +10,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Wallet, ChevronDown, Copy, ExternalLink, LogOut, Award, Shield, Zap, Star } from "lucide-react";
-
-interface HeaderProps {
-  isConnected: boolean;
-  walletAddress: string;
-  onConnect: (address: string) => void;
-  onDisconnect: () => void;
-}
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import { useCallback } from "react";
 
 // Mock NFT Badges data
 const nftBadges = [
@@ -90,21 +86,30 @@ function PandoraLogo() {
   );
 }
 
-export function Header({ isConnected, walletAddress, onConnect, onDisconnect }: HeaderProps) {
+export function Header() {
+  const { publicKey, disconnect, connected } = useWallet();
+  const { setVisible } = useWalletModal();
+
+  const walletAddress = publicKey?.toBase58() || "";
+
   const formatAddress = (address: string) => {
     if (!address) return "";
     return `${address.slice(0, 4)}...${address.slice(-4)}`;
   };
 
-  const handleConnect = () => {
-    // Mock wallet connection
-    const mockAddress = "7xKXtJqF4j9sM2kLpN8vR3wE5uY6hG1cD";
-    onConnect(mockAddress);
-  };
+  const handleConnect = useCallback(() => {
+    setVisible(true);
+  }, [setVisible]);
 
-  const handleCopyAddress = () => {
-    navigator.clipboard.writeText(walletAddress);
-  };
+  const handleDisconnect = useCallback(() => {
+    disconnect();
+  }, [disconnect]);
+
+  const handleCopyAddress = useCallback(() => {
+    if (walletAddress) {
+      navigator.clipboard.writeText(walletAddress);
+    }
+  }, [walletAddress]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-glass-border bg-glass-bg backdrop-blur-xl">
@@ -123,7 +128,7 @@ export function Header({ isConnected, walletAddress, onConnect, onDisconnect }: 
         </div>
 
         {/* Connect Wallet Button / Account Dropdown */}
-        {!isConnected ? (
+        {!connected ? (
           <Button
             onClick={handleConnect}
             className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_var(--glow-primary)] transition-all hover:shadow-[0_0_30px_var(--glow-primary)]"
@@ -198,7 +203,7 @@ export function Header({ isConnected, walletAddress, onConnect, onDisconnect }: 
               </DropdownMenuItem>
               <DropdownMenuSeparator className="bg-border" />
               <DropdownMenuItem
-                onClick={onDisconnect}
+                onClick={handleDisconnect}
                 className="cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive"
               >
                 <LogOut className="mr-2 size-4" />

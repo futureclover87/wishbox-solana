@@ -7,8 +7,10 @@ import { WishDetailDialog } from "@/components/wishbox/wish-detail-dialog";
 import { CreateWishSheet } from "@/components/wishbox/create-wish-sheet";
 import { TrendingProjects } from "@/components/wishbox/trending-projects";
 import type { Wish } from "@/components/wishbox/wish-card";
-import { Plus, Search, Code, Palette, Languages, FileText, Database, Microscope, ArrowUpDown, Clock, Coins, Users } from "lucide-react";
+import { Plus, Search, Coins, Users, Clock, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 
 // Mock data - specific tasks in English
 const initialWishes: Wish[] = [
@@ -125,24 +127,18 @@ const initialWishes: Wish[] = [
 type TabType = "implementer" | "requester";
 type SortType = "reward" | "time" | "contributors";
 
-const categoryIcons: Record<string, React.ElementType> = {
-  Development: Code,
-  Design: Palette,
-  Translation: Languages,
-  Writing: FileText,
-  Data: Database,
-  Research: Microscope,
-};
-
 export default function WishboxPage() {
   const [wishes, setWishes] = useState<Wish[]>(initialWishes);
   const [selectedWish, setSelectedWish] = useState<Wish | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isCreateSheetOpen, setIsCreateSheetOpen] = useState(false);
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("");
   const [activeTab, setActiveTab] = useState<TabType>("implementer");
   const [sortBy, setSortBy] = useState<SortType>("reward");
+
+  // Real wallet connection
+  const { publicKey, connected } = useWallet();
+  const { setVisible } = useWalletModal();
+  const walletAddress = publicKey?.toBase58() || "";
 
   const handleWishClick = (wish: Wish) => {
     setSelectedWish(wish);
@@ -160,7 +156,7 @@ export default function WishboxPage() {
       id: Date.now().toString(),
       ...data,
       contributors: 0,
-      walletAddress: walletAddress || "7xKXtJqF4j9sM2kLpN8vR3wE5uY6hG1cD",
+      walletAddress: walletAddress || "Anonymous",
       timestamp: "Just now",
       status: "open",
     };
@@ -189,14 +185,8 @@ export default function WishboxPage() {
     );
   };
 
-  const handleWalletConnect = (address: string) => {
-    setIsWalletConnected(true);
-    setWalletAddress(address);
-  };
-
-  const handleWalletDisconnect = () => {
-    setIsWalletConnected(false);
-    setWalletAddress("");
+  const handleConnectWallet = () => {
+    setVisible(true);
   };
 
   // Sort wishes based on selected criteria
@@ -222,12 +212,7 @@ export default function WishboxPage() {
       </div>
 
       {/* Header */}
-      <Header
-        isConnected={isWalletConnected}
-        walletAddress={walletAddress}
-        onConnect={handleWalletConnect}
-        onDisconnect={handleWalletDisconnect}
-      />
+      <Header />
 
       {/* Main Content */}
       <main className="relative z-10 container mx-auto px-4 py-6">
@@ -277,7 +262,11 @@ export default function WishboxPage() {
             onSortChange={setSortBy}
           />
         ) : (
-          <RequesterView onCreateClick={() => setIsCreateSheetOpen(true)} wishes={wishes} />
+          <RequesterView 
+            onCreateClick={() => setIsCreateSheetOpen(true)} 
+            wishes={wishes} 
+            walletAddress={walletAddress}
+          />
         )}
       </main>
 
@@ -286,8 +275,8 @@ export default function WishboxPage() {
         wish={selectedWish}
         open={isDetailOpen}
         onOpenChange={setIsDetailOpen}
-        isWalletConnected={isWalletConnected}
-        onConnectWallet={() => handleWalletConnect("7xKXtJqF4j9sM2kLpN8vR3wE5uY6hG1cD")}
+        isWalletConnected={connected}
+        onConnectWallet={handleConnectWallet}
         onContribute={handleContribute}
         onClaim={handleClaim}
       />
@@ -325,8 +314,16 @@ export default function WishboxPage() {
 }
 
 // Requester View Component
-function RequesterView({ onCreateClick, wishes }: { onCreateClick: () => void; wishes: Wish[] }) {
-  const myTasks = wishes.filter((w) => w.walletAddress === "7xKXtJqF4j9sM2kLpN8vR3wE5uY6hG1cD");
+function RequesterView({ 
+  onCreateClick, 
+  wishes,
+  walletAddress 
+}: { 
+  onCreateClick: () => void; 
+  wishes: Wish[];
+  walletAddress: string;
+}) {
+  const myTasks = wishes.filter((w) => w.walletAddress === walletAddress);
 
   return (
     <div className="space-y-6">
