@@ -5,8 +5,10 @@ import { Header } from "@/components/wishbox/header";
 import { RecentWishes } from "@/components/wishbox/recent-wishes";
 import { WishDetailDialog } from "@/components/wishbox/wish-detail-dialog";
 import { CreateWishSheet } from "@/components/wishbox/create-wish-sheet";
-import { CreateWishTab } from "@/components/wishbox/create-wish-tab";
+import { TrendingProjects } from "@/components/wishbox/trending-projects";
 import type { Wish } from "@/components/wishbox/wish-card";
+import { Plus, Search, Code, Palette, Languages, FileText, Database, Microscope, ArrowUpDown, Clock, Coins, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 // Mock data - specific tasks in English
 const initialWishes: Wish[] = [
@@ -120,6 +122,18 @@ const initialWishes: Wish[] = [
   },
 ];
 
+type TabType = "implementer" | "requester";
+type SortType = "reward" | "time" | "contributors";
+
+const categoryIcons: Record<string, React.ElementType> = {
+  Development: Code,
+  Design: Palette,
+  Translation: Languages,
+  Writing: FileText,
+  Data: Database,
+  Research: Microscope,
+};
+
 export default function WishboxPage() {
   const [wishes, setWishes] = useState<Wish[]>(initialWishes);
   const [selectedWish, setSelectedWish] = useState<Wish | null>(null);
@@ -127,6 +141,8 @@ export default function WishboxPage() {
   const [isCreateSheetOpen, setIsCreateSheetOpen] = useState(false);
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
+  const [activeTab, setActiveTab] = useState<TabType>("implementer");
+  const [sortBy, setSortBy] = useState<SortType>("reward");
 
   const handleWishClick = (wish: Wish) => {
     setSelectedWish(wish);
@@ -183,6 +199,19 @@ export default function WishboxPage() {
     setWalletAddress("");
   };
 
+  // Sort wishes based on selected criteria
+  const sortedWishes = [...wishes].sort((a, b) => {
+    switch (sortBy) {
+      case "reward":
+        return b.reward - a.reward;
+      case "contributors":
+        return b.contributors - a.contributors;
+      case "time":
+      default:
+        return 0; // Keep original order (already sorted by time in mock data)
+    }
+  });
+
   return (
     <div className="relative min-h-screen">
       {/* Background Effects */}
@@ -200,51 +229,94 @@ export default function WishboxPage() {
         onDisconnect={handleWalletDisconnect}
       />
 
-      {/* Floating Create Tab */}
-      <CreateWishTab onClick={() => setIsCreateSheetOpen(true)} />
-
       {/* Main Content */}
-      <main className="relative z-10 container mx-auto px-4 py-12">
-        {/* Hero Section */}
-        <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">
-            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              Wishbox
-            </span>
-          </h1>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground text-balance">
-            Post your tasks, let the global community help you complete them. Support contributions, claims, all operations transparent and traceable on-chain.
-          </p>
+      <main className="relative z-10 container mx-auto px-4 py-6">
+        {/* Trending Projects - Compact */}
+        <div className="mb-4">
+          <TrendingProjects />
         </div>
 
-        {/* Stats */}
-        <div className="mb-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-          <div className="rounded-xl border border-glass-border bg-glass-bg p-4 text-center backdrop-blur-md">
-            <p className="text-2xl font-bold text-primary">{wishes.length}</p>
-            <p className="text-sm text-muted-foreground">Active Tasks</p>
+        {/* Tab Navigation */}
+        <div className="mb-6 flex items-center justify-between">
+          <div className="flex rounded-xl border border-glass-border bg-glass-bg/50 p-1 backdrop-blur-md">
+            <button
+              onClick={() => setActiveTab("implementer")}
+              className={`rounded-lg px-6 py-2.5 text-sm font-medium transition-all ${
+                activeTab === "implementer"
+                  ? "bg-primary text-primary-foreground shadow-[0_0_15px_var(--glow-primary)]"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <Search className="size-4" />
+                Find Tasks
+              </span>
+            </button>
+            <button
+              onClick={() => setActiveTab("requester")}
+              className={`rounded-lg px-6 py-2.5 text-sm font-medium transition-all ${
+                activeTab === "requester"
+                  ? "bg-primary text-primary-foreground shadow-[0_0_15px_var(--glow-primary)]"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <Plus className="size-4" />
+                Post Tasks
+              </span>
+            </button>
           </div>
-          <div className="rounded-xl border border-glass-border bg-glass-bg p-4 text-center backdrop-blur-md">
-            <p className="text-2xl font-bold text-foreground">
-              {wishes.reduce((acc, w) => acc + w.reward, 0).toFixed(1)}
-            </p>
-            <p className="text-sm text-muted-foreground">Total SOL Rewards</p>
-          </div>
-          <div className="rounded-xl border border-glass-border bg-glass-bg p-4 text-center backdrop-blur-md">
-            <p className="text-2xl font-bold text-foreground">
-              {wishes.reduce((acc, w) => acc + w.contributors, 0)}
-            </p>
-            <p className="text-sm text-muted-foreground">Contributions</p>
-          </div>
-          <div className="rounded-xl border border-glass-border bg-glass-bg p-4 text-center backdrop-blur-md">
-            <p className="text-2xl font-bold text-accent">
-              {wishes.filter((w) => w.status === "completed").length}
-            </p>
-            <p className="text-sm text-muted-foreground">Completed</p>
-          </div>
+
+          {/* Sort Options - Only for Implementer Tab */}
+          {activeTab === "implementer" && (
+            <div className="flex items-center gap-2">
+              <ArrowUpDown className="size-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground mr-2">Sort by:</span>
+              <div className="flex rounded-lg border border-glass-border bg-glass-bg/50 p-0.5">
+                <button
+                  onClick={() => setSortBy("reward")}
+                  className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs transition-all ${
+                    sortBy === "reward"
+                      ? "bg-primary/20 text-primary"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Coins className="size-3" />
+                  Bounty
+                </button>
+                <button
+                  onClick={() => setSortBy("time")}
+                  className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs transition-all ${
+                    sortBy === "time"
+                      ? "bg-primary/20 text-primary"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Clock className="size-3" />
+                  Recent
+                </button>
+                <button
+                  onClick={() => setSortBy("contributors")}
+                  className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs transition-all ${
+                    sortBy === "contributors"
+                      ? "bg-primary/20 text-primary"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Users className="size-3" />
+                  Hot
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Wishes Dashboard */}
-        <RecentWishes wishes={wishes} onWishClick={handleWishClick} />
+        {/* Content based on active tab */}
+        {activeTab === "implementer" ? (
+          <RecentWishes wishes={sortedWishes} onWishClick={handleWishClick} />
+        ) : (
+          <RequesterView onCreateClick={() => setIsCreateSheetOpen(true)} wishes={wishes} />
+        )}
       </main>
 
       {/* Wish Detail Dialog */}
@@ -286,6 +358,107 @@ export default function WishboxPage() {
           </div>
         </div>
       </footer>
+    </div>
+  );
+}
+
+// Requester View Component
+function RequesterView({ onCreateClick, wishes }: { onCreateClick: () => void; wishes: Wish[] }) {
+  const myTasks = wishes.filter((w) => w.walletAddress === "7xKXtJqF4j9sM2kLpN8vR3wE5uY6hG1cD");
+
+  return (
+    <div className="space-y-6">
+      {/* Prominent Create Button */}
+      <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-primary/50 bg-gradient-to-br from-primary/10 via-glass-bg to-accent/10 p-8">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5" />
+        <div className="relative flex flex-col items-center gap-4 text-center">
+          <div className="flex size-20 items-center justify-center rounded-full bg-primary/20 shadow-[0_0_40px_var(--glow-primary)]">
+            <Plus className="size-10 text-primary" />
+          </div>
+          <div>
+            <h2 className="mb-2 text-2xl font-bold text-foreground">Post a New Task</h2>
+            <p className="text-muted-foreground max-w-md">
+              Describe your task, set a bounty, and let the community help you complete it
+            </p>
+          </div>
+          <Button
+            onClick={onCreateClick}
+            size="lg"
+            className="mt-2 bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_30px_var(--glow-primary)] transition-all hover:shadow-[0_0_50px_var(--glow-primary)] px-8 py-6 text-lg"
+          >
+            <Plus className="mr-2 size-5" />
+            Create Task
+          </Button>
+        </div>
+      </div>
+
+      {/* My Posted Tasks */}
+      <div className="rounded-xl border border-glass-border bg-glass-bg/50 p-6 backdrop-blur-md">
+        <h3 className="mb-4 text-lg font-semibold text-foreground flex items-center gap-2">
+          <FileText className="size-5 text-primary" />
+          My Posted Tasks
+        </h3>
+        {myTasks.length === 0 ? (
+          <div className="py-8 text-center text-muted-foreground">
+            <p>{"You haven't posted any tasks yet"}</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {myTasks.map((task) => (
+              <div
+                key={task.id}
+                className="flex items-center justify-between rounded-lg border border-glass-border bg-secondary/30 p-4"
+              >
+                <div className="flex-1">
+                  <h4 className="font-medium text-foreground">{task.title}</h4>
+                  <div className="mt-1 flex items-center gap-4 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <Coins className="size-3 text-primary" />
+                      {task.reward} SOL
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Users className="size-3" />
+                      {task.contributors} contributed
+                    </span>
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-xs ${
+                        task.status === "open"
+                          ? "bg-green-500/20 text-green-400"
+                          : task.status === "claimed"
+                            ? "bg-yellow-500/20 text-yellow-400"
+                            : "bg-primary/20 text-primary"
+                      }`}
+                    >
+                      {task.status.charAt(0).toUpperCase() + task.status.slice(1)}
+                    </span>
+                  </div>
+                </div>
+                <Clock className="size-4 text-muted-foreground" />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Quick Stats */}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="rounded-xl border border-glass-border bg-glass-bg/50 p-4 text-center backdrop-blur-md">
+          <p className="text-2xl font-bold text-primary">{myTasks.length}</p>
+          <p className="text-sm text-muted-foreground">Tasks Posted</p>
+        </div>
+        <div className="rounded-xl border border-glass-border bg-glass-bg/50 p-4 text-center backdrop-blur-md">
+          <p className="text-2xl font-bold text-foreground">
+            {myTasks.reduce((acc, w) => acc + w.reward, 0).toFixed(1)}
+          </p>
+          <p className="text-sm text-muted-foreground">Total Bounty</p>
+        </div>
+        <div className="rounded-xl border border-glass-border bg-glass-bg/50 p-4 text-center backdrop-blur-md">
+          <p className="text-2xl font-bold text-accent">
+            {myTasks.filter((w) => w.status === "completed").length}
+          </p>
+          <p className="text-sm text-muted-foreground">Completed</p>
+        </div>
+      </div>
     </div>
   );
 }

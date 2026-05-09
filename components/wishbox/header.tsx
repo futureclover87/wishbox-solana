@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Wallet, ChevronDown, Copy, ExternalLink, LogOut } from "lucide-react";
+import { Wallet, ChevronDown, Copy, ExternalLink, LogOut, Award, Shield, Zap, Star } from "lucide-react";
 
 interface HeaderProps {
   isConnected: boolean;
@@ -17,6 +17,13 @@ interface HeaderProps {
   onConnect: (address: string) => void;
   onDisconnect: () => void;
 }
+
+// Mock NFT Badges data
+const nftBadges = [
+  { id: "1", name: "Pioneer", icon: Star, color: "text-yellow-400", description: "Early adopter" },
+  { id: "2", name: "Top Solver", icon: Zap, color: "text-primary", description: "10+ tasks completed" },
+  { id: "3", name: "Trusted", icon: Shield, color: "text-green-400", description: "Verified contributor" },
+];
 
 // Pandora's Box Logo Component
 function PandoraLogo() {
@@ -140,11 +147,40 @@ export function Header({ isConnected, walletAddress, onConnect, onDisconnect }: 
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="w-56 border-glass-border bg-popover backdrop-blur-xl"
+              className="w-72 border-glass-border bg-popover backdrop-blur-xl"
             >
               <DropdownMenuLabel className="text-muted-foreground">
                 My Account
               </DropdownMenuLabel>
+              <DropdownMenuSeparator className="bg-border" />
+              
+              {/* NFT Badges Section */}
+              <div className="px-2 py-2">
+                <div className="flex items-center gap-2 mb-2 px-2">
+                  <Award className="size-4 text-accent" />
+                  <span className="text-xs font-medium text-muted-foreground">NFT Badges</span>
+                </div>
+                <div className="space-y-1">
+                  {nftBadges.map((badge) => {
+                    const BadgeIcon = badge.icon;
+                    return (
+                      <div
+                        key={badge.id}
+                        className="flex items-center gap-3 rounded-lg bg-secondary/50 px-3 py-2"
+                      >
+                        <div className={`flex size-8 items-center justify-center rounded-lg bg-glass-bg border border-glass-border`}>
+                          <BadgeIcon className={`size-4 ${badge.color}`} />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-foreground">{badge.name}</p>
+                          <p className="text-xs text-muted-foreground">{badge.description}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              
               <DropdownMenuSeparator className="bg-border" />
               <DropdownMenuItem onClick={handleCopyAddress} className="cursor-pointer focus:bg-primary/10">
                 <Copy className="mr-2 size-4 text-muted-foreground" />
