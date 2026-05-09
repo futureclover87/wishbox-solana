@@ -14,7 +14,7 @@ export function CreateWishTab({ onClick }: CreateWishTabProps) {
     >
       <PenLine className="size-5" />
       <span className="hidden text-sm font-medium group-hover:inline whitespace-nowrap">
-        发布任务
+        Post Task
       </span>
     </button>
   );

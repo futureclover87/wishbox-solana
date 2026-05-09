@@ -33,9 +33,9 @@ export function WishCard({ wish, onClick }: WishCardProps) {
   };
 
   const statusText = {
-    open: "开放中",
-    claimed: "已认领",
-    completed: "已完成",
+    open: "Open",
+    claimed: "Claimed",
+    completed: "Completed",
   };
 
   return (
@@ -76,7 +76,7 @@ export function WishCard({ wish, onClick }: WishCardProps) {
           </div>
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <Users className="size-3.5" />
-            <span className="text-xs">{wish.contributors} 人加注</span>
+            <span className="text-xs">{wish.contributors} contributed</span>
           </div>
         </div>
 
@@ -87,7 +87,7 @@ export function WishCard({ wish, onClick }: WishCardProps) {
             {wish.isAnonymous ? (
               <>
                 <EyeOff className="size-3 text-accent" />
-                <span className="font-mono text-accent">匿名</span>
+                <span className="font-mono text-accent">Anonymous</span>
               </>
             ) : (
               <>

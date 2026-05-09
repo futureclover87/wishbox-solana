@@ -8,113 +8,113 @@ import { CreateWishSheet } from "@/components/wishbox/create-wish-sheet";
 import { CreateWishTab } from "@/components/wishbox/create-wish-tab";
 import type { Wish } from "@/components/wishbox/wish-card";
 
-// Mock data - specific tasks
+// Mock data - specific tasks in English
 const initialWishes: Wish[] = [
   {
     id: "1",
-    title: "帮我写一个 Rust 智能合约的单元测试",
-    description: "需要为我的 Solana 智能合约编写完整的单元测试，覆盖所有关键功能路径，包括转账、质押和取款功能。",
-    category: "开发",
+    title: "Write unit tests for my Rust smart contract",
+    description: "Need comprehensive unit tests for my Solana smart contract covering all critical paths including transfer, staking, and withdrawal functions.",
+    category: "Development",
     reward: 2.5,
     contributors: 3,
     walletAddress: "7xKXtJqF4j9sM2kLpN8vR3wE5uY6hG1cD",
-    timestamp: "2 分钟前",
+    timestamp: "2 min ago",
     isAnonymous: false,
     status: "open",
   },
   {
     id: "2",
-    title: "将我的白皮书从英文翻译成中文",
-    description: "一份 15 页的 DeFi 项目白皮书，需要专业的中文翻译，保持技术术语的准确性。",
-    category: "翻译",
+    title: "Translate my whitepaper from English to Spanish",
+    description: "A 15-page DeFi project whitepaper needs professional Spanish translation while maintaining technical terminology accuracy.",
+    category: "Translation",
     reward: 1.8,
     contributors: 5,
     walletAddress: "9mNbVcXzAsD2fGhJkL1qWeRtYuIoP5pO",
-    timestamp: "15 分钟前",
+    timestamp: "15 min ago",
     isAnonymous: true,
     status: "claimed",
   },
   {
     id: "3",
-    title: "设计一套 NFT 头像系列的概念图",
-    description: "需要设计 5 张不同风格的赛博朋克主题 NFT 头像概念图，用于后续的 AI 生成参考。",
-    category: "设计",
+    title: "Design 5 cyberpunk NFT avatar concepts",
+    description: "Need 5 different cyberpunk-themed NFT avatar concept designs for AI generation reference. High quality artwork required.",
+    category: "Design",
     reward: 3.2,
     contributors: 8,
     walletAddress: "3pQwErTyUiOpAsDfGhJkLzXcVbNm4rS",
-    timestamp: "1 小时前",
+    timestamp: "1 hour ago",
     isAnonymous: false,
     status: "open",
   },
   {
     id: "4",
-    title: "整理 100 个 Solana 生态项目的数据",
-    description: "收集并整理 Solana 生态中 100 个项目的基本信息，包括名称、官网、Twitter、TVL 等数据。",
-    category: "数据",
+    title: "Compile data on 100 Solana ecosystem projects",
+    description: "Collect and organize basic info on 100 Solana projects including name, website, Twitter, TVL, and other key metrics.",
+    category: "Data",
     reward: 0.8,
     contributors: 2,
     walletAddress: "5tYuIoPaSdFgHjKlZxCvBnM8qWeRtYu",
-    timestamp: "2 小时前",
+    timestamp: "2 hours ago",
     isAnonymous: false,
     status: "open",
   },
   {
     id: "5",
-    title: "撰写一篇关于 Solana MEV 的深度分析文章",
-    description: "需要一篇 3000 字左右的技术文章，深入分析 Solana 上的 MEV 现状、主要参与者和未来趋势。",
-    category: "写作",
+    title: "Write an in-depth analysis on Solana MEV",
+    description: "Need a ~3000 word technical article analyzing the current state of MEV on Solana, major players, and future trends.",
+    category: "Writing",
     reward: 4.5,
     contributors: 12,
     walletAddress: "2wErTyUiOpAsDfGhJkLzXcVbNm9qWeR",
-    timestamp: "3 小时前",
+    timestamp: "3 hours ago",
     isAnonymous: true,
     status: "open",
   },
   {
     id: "6",
-    title: "调研 10 个 Solana 钱包的用户体验",
-    description: "对比分析 10 个主流 Solana 钱包的功能、UI/UX、安全性等方面，输出一份详细的调研报告。",
-    category: "调研",
+    title: "UX research on 10 Solana wallets",
+    description: "Compare and analyze 10 popular Solana wallets for features, UI/UX, security, etc. Deliver a detailed research report.",
+    category: "Research",
     reward: 1.2,
     contributors: 4,
     walletAddress: "8iOpAsDfGhJkLzXcVbNm1qWeRtYuIoP",
-    timestamp: "5 小时前",
+    timestamp: "5 hours ago",
     isAnonymous: false,
     status: "completed",
   },
   {
     id: "7",
-    title: "帮我 Debug 一个 Anchor 项目的错误",
-    description: "我的 Anchor 项目在调用 CPI 时报错，需要有经验的开发者帮忙排查和修复问题。",
-    category: "开发",
+    title: "Debug CPI error in my Anchor project",
+    description: "My Anchor project throws an error when calling CPI. Need an experienced developer to help troubleshoot and fix the issue.",
+    category: "Development",
     reward: 1.5,
     contributors: 1,
     walletAddress: "4rTyUiOpAsDfGhJkLzXcVbNm2qWeRtY",
-    timestamp: "6 小时前",
+    timestamp: "6 hours ago",
     isAnonymous: false,
     status: "open",
   },
   {
     id: "8",
-    title: "为我的 dApp 设计一个 Landing Page",
-    description: "需要一个现代感的 Web3 风格 Landing Page 设计稿，包含 Hero、Features、Tokenomics 等板块。",
-    category: "设计",
+    title: "Design a landing page for my dApp",
+    description: "Need a modern Web3-style landing page design including Hero, Features, Tokenomics, and other sections.",
+    category: "Design",
     reward: 2.0,
     contributors: 6,
     walletAddress: "6uIoPasDfGhJkLzXcVbNm3qWeRtYuIo",
-    timestamp: "8 小时前",
+    timestamp: "8 hours ago",
     isAnonymous: false,
     status: "open",
   },
   {
     id: "9",
-    title: "帮我校对一份 DAO 治理提案",
-    description: "需要对一份 DAO 治理提案进行语法和逻辑校对，确保表达清晰、专业。",
-    category: "写作",
+    title: "Proofread a DAO governance proposal",
+    description: "Need grammar and logic proofreading for a DAO governance proposal to ensure clear and professional expression.",
+    category: "Writing",
     reward: 0.5,
     contributors: 0,
     walletAddress: "1pAsDfGhJkLzXcVbNm4qWeRtYuIoPaS",
-    timestamp: "10 小时前",
+    timestamp: "10 hours ago",
     isAnonymous: true,
     status: "open",
   },
@@ -145,7 +145,7 @@ export default function WishboxPage() {
       ...data,
       contributors: 0,
       walletAddress: walletAddress || "7xKXtJqF4j9sM2kLpN8vR3wE5uY6hG1cD",
-      timestamp: "刚刚",
+      timestamp: "Just now",
       status: "open",
     };
     setWishes([newWish, ...wishes]);
@@ -213,7 +213,7 @@ export default function WishboxPage() {
             </span>
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground text-balance">
-            发布你的任务，让全球社区帮你完成。支持加注、认领，所有操作链上透明可追溯。
+            Post your tasks, let the global community help you complete them. Support contributions, claims, all operations transparent and traceable on-chain.
           </p>
         </div>
 
@@ -221,25 +221,25 @@ export default function WishboxPage() {
         <div className="mb-12 grid grid-cols-2 gap-4 md:grid-cols-4">
           <div className="rounded-xl border border-glass-border bg-glass-bg p-4 text-center backdrop-blur-md">
             <p className="text-2xl font-bold text-primary">{wishes.length}</p>
-            <p className="text-sm text-muted-foreground">活跃任务</p>
+            <p className="text-sm text-muted-foreground">Active Tasks</p>
           </div>
           <div className="rounded-xl border border-glass-border bg-glass-bg p-4 text-center backdrop-blur-md">
             <p className="text-2xl font-bold text-foreground">
               {wishes.reduce((acc, w) => acc + w.reward, 0).toFixed(1)}
             </p>
-            <p className="text-sm text-muted-foreground">SOL 总奖励</p>
+            <p className="text-sm text-muted-foreground">Total SOL Rewards</p>
           </div>
           <div className="rounded-xl border border-glass-border bg-glass-bg p-4 text-center backdrop-blur-md">
             <p className="text-2xl font-bold text-foreground">
               {wishes.reduce((acc, w) => acc + w.contributors, 0)}
             </p>
-            <p className="text-sm text-muted-foreground">加注次数</p>
+            <p className="text-sm text-muted-foreground">Contributions</p>
           </div>
           <div className="rounded-xl border border-glass-border bg-glass-bg p-4 text-center backdrop-blur-md">
             <p className="text-2xl font-bold text-accent">
               {wishes.filter((w) => w.status === "completed").length}
             </p>
-            <p className="text-sm text-muted-foreground">已完成</p>
+            <p className="text-sm text-muted-foreground">Completed</p>
           </div>
         </div>
 
@@ -253,6 +253,7 @@ export default function WishboxPage() {
         open={isDetailOpen}
         onOpenChange={setIsDetailOpen}
         isWalletConnected={isWalletConnected}
+        onConnectWallet={() => handleWalletConnect("7xKXtJqF4j9sM2kLpN8vR3wE5uY6hG1cD")}
         onContribute={handleContribute}
         onClaim={handleClaim}
       />
@@ -269,7 +270,7 @@ export default function WishboxPage() {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-sm text-muted-foreground">
-              © 2026 Wishbox. 构建于 Solana 区块链
+              2026 Wishbox. Built on Solana Blockchain
             </p>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <a href="#" className="transition-colors hover:text-primary">

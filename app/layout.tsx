@@ -7,8 +7,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Wishbox - 在 Solana 上许愿',
-  description: '在 Solana 区块链上永久记录你的愿望，让梦想成为不可篡改的链上印记',
+  title: 'Wishbox - Pandora\'s Bounty on Solana',
+  description: 'Post tasks, contribute rewards, and claim bounties. All transparent and traceable on the Solana blockchain.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="zh-CN" className="dark bg-background">
+    <html lang="en" className="dark bg-background">
       <body className="font-sans antialiased bg-background text-foreground">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

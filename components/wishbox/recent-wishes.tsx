@@ -10,17 +10,17 @@ interface RecentWishesProps {
   onWishClick: (wish: Wish) => void;
 }
 
-const categoryFilters = ["全部", "开发", "设计", "翻译", "写作", "数据", "调研", "其他"];
+const categoryFilters = ["All", "Development", "Design", "Translation", "Writing", "Data", "Research", "Other"];
 
 export function RecentWishes({ wishes, onWishClick }: RecentWishesProps) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState("全部");
+  const [activeCategory, setActiveCategory] = useState("All");
 
   const filteredWishes = wishes.filter((wish) => {
     const matchesSearch =
       wish.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       wish.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = activeCategory === "全部" || wish.category === activeCategory;
+    const matchesCategory = activeCategory === "All" || wish.category === activeCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -31,7 +31,7 @@ export function RecentWishes({ wishes, onWishClick }: RecentWishesProps) {
         <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
         <div className="flex items-center gap-2 text-muted-foreground">
           <Sparkles className="size-4 text-primary" />
-          <span className="text-sm font-medium">任务列表</span>
+          <span className="text-sm font-medium">Task Board</span>
           <span className="rounded-full bg-primary/20 px-2 py-0.5 text-xs text-primary">
             {wishes.length}
           </span>
@@ -45,7 +45,7 @@ export function RecentWishes({ wishes, onWishClick }: RecentWishesProps) {
         <div className="relative">
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="搜索任务..."
+            placeholder="Search tasks..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="border-glass-border bg-secondary/50 pl-10"
@@ -78,12 +78,12 @@ export function RecentWishes({ wishes, onWishClick }: RecentWishesProps) {
             </div>
           </div>
           <h3 className="mb-2 text-lg font-medium text-foreground">
-            {searchQuery || activeCategory !== "全部" ? "没有找到匹配的任务" : "还没有任务"}
+            {searchQuery || activeCategory !== "All" ? "No matching tasks found" : "No tasks yet"}
           </h3>
           <p className="text-sm text-muted-foreground">
-            {searchQuery || activeCategory !== "全部"
-              ? "尝试调整搜索条件或筛选器"
-              : "成为第一个发布任务的人吧！"}
+            {searchQuery || activeCategory !== "All"
+              ? "Try adjusting your search or filters"
+              : "Be the first to post a task!"}
           </p>
         </div>
       ) : (

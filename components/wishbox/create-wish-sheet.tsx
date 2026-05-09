@@ -27,19 +27,19 @@ interface CreateWishSheetProps {
 }
 
 const categories = [
-  "开发",
-  "设计",
-  "翻译",
-  "写作",
-  "数据",
-  "调研",
-  "其他",
+  "Development",
+  "Design",
+  "Translation",
+  "Writing",
+  "Data",
+  "Research",
+  "Other",
 ];
 
 export function CreateWishSheet({ open, onOpenChange, onSubmit }: CreateWishSheetProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("开发");
+  const [category, setCategory] = useState("Development");
   const [reward, setReward] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +61,7 @@ export function CreateWishSheet({ open, onOpenChange, onSubmit }: CreateWishShee
     // Reset form
     setTitle("");
     setDescription("");
-    setCategory("开发");
+    setCategory("Development");
     setReward("");
     setIsAnonymous(false);
     setIsLoading(false);
@@ -82,8 +82,8 @@ export function CreateWishSheet({ open, onOpenChange, onSubmit }: CreateWishShee
               <PenLine className="size-5 text-primary" />
             </div>
             <div>
-              <SheetTitle className="text-lg text-foreground">发布新任务</SheetTitle>
-              <SheetDescription>创建一个新的任务，等待他人认领完成</SheetDescription>
+              <SheetTitle className="text-lg text-foreground">Post New Task</SheetTitle>
+              <SheetDescription>Create a new task for others to claim and complete</SheetDescription>
             </div>
           </div>
         </SheetHeader>
@@ -91,18 +91,18 @@ export function CreateWishSheet({ open, onOpenChange, onSubmit }: CreateWishShee
         <div className="space-y-6 px-1">
           {/* Title */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">任务标题</label>
+            <label className="text-sm font-medium text-foreground">Task Title</label>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="例如：帮我设计一个 Logo"
+              placeholder="e.g., Design a logo for my project"
               className="border-glass-border bg-secondary/50"
             />
           </div>
 
           {/* Category */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">任务分类</label>
+            <label className="text-sm font-medium text-foreground">Category</label>
             <div className="flex flex-wrap gap-2">
               {categories.map((cat) => (
                 <button
@@ -122,18 +122,18 @@ export function CreateWishSheet({ open, onOpenChange, onSubmit }: CreateWishShee
 
           {/* Description */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">任务描述</label>
+            <label className="text-sm font-medium text-foreground">Task Description</label>
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="详细描述你需要完成的任务..."
+              placeholder="Describe your task in detail..."
               className="min-h-[120px] resize-none border-glass-border bg-secondary/50"
             />
           </div>
 
           {/* Reward */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">初始奖励</label>
+            <label className="text-sm font-medium text-foreground">Initial Reward</label>
             <div className="relative">
               <Coins className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-primary" />
               <Input
@@ -150,7 +150,7 @@ export function CreateWishSheet({ open, onOpenChange, onSubmit }: CreateWishShee
               </span>
             </div>
             <p className="text-xs text-muted-foreground">
-              其他用户可以在你的任务上加注更多 SOL
+              Others can contribute more SOL to increase the reward
             </p>
           </div>
 
@@ -164,10 +164,10 @@ export function CreateWishSheet({ open, onOpenChange, onSubmit }: CreateWishShee
               )}
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  {isAnonymous ? "匿名发布" : "公开发布"}
+                  {isAnonymous ? "Post Anonymously" : "Post Publicly"}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {isAnonymous ? "你的钱包地址将被隐藏" : "你的钱包地址将公开显示"}
+                  {isAnonymous ? "Your wallet address will be hidden" : "Your wallet address will be visible"}
                 </p>
               </div>
             </div>
@@ -190,12 +190,12 @@ export function CreateWishSheet({ open, onOpenChange, onSubmit }: CreateWishShee
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 size-4 animate-spin" />
-                发布中...
+                Posting...
               </>
             ) : (
               <>
                 <Sparkles className="mr-2 size-4" />
-                发布任务
+                Post Task
               </>
             )}
           </Button>
