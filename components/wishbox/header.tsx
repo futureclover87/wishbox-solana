@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,16 +11,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Wallet, ChevronDown, Copy, ExternalLink, LogOut, Sparkles } from "lucide-react";
 
-export function Header() {
-  const [isConnected, setIsConnected] = useState(false);
-  const [walletAddress] = useState("7xKXt...F4j9");
+interface HeaderProps {
+  isConnected: boolean;
+  walletAddress: string;
+  onConnect: (address: string) => void;
+  onDisconnect: () => void;
+}
 
-  const handleConnect = () => {
-    setIsConnected(true);
+export function Header({ isConnected, walletAddress, onConnect, onDisconnect }: HeaderProps) {
+  const formatAddress = (address: string) => {
+    if (!address) return "";
+    return `${address.slice(0, 4)}...${address.slice(-4)}`;
   };
 
-  const handleDisconnect = () => {
-    setIsConnected(false);
+  const handleConnect = () => {
+    // Mock wallet connection
+    const mockAddress = "7xKXtJqF4j9sM2kLpN8vR3wE5uY6hG1cD";
+    onConnect(mockAddress);
+  };
+
+  const handleCopyAddress = () => {
+    navigator.clipboard.writeText(walletAddress);
   };
 
   return (
@@ -54,7 +64,7 @@ export function Header() {
                 <div className="flex size-5 items-center justify-center rounded-full bg-primary/30 mr-2">
                   <Wallet className="size-3 text-primary" />
                 </div>
-                <span className="font-mono">{walletAddress}</span>
+                <span className="font-mono">{formatAddress(walletAddress)}</span>
                 <ChevronDown className="ml-2 size-4 text-muted-foreground" />
               </Button>
             </DropdownMenuTrigger>
@@ -66,17 +76,23 @@ export function Header() {
                 我的账户
               </DropdownMenuLabel>
               <DropdownMenuSeparator className="bg-border" />
-              <DropdownMenuItem className="cursor-pointer focus:bg-primary/10">
+              <DropdownMenuItem onClick={handleCopyAddress} className="cursor-pointer focus:bg-primary/10">
                 <Copy className="mr-2 size-4 text-muted-foreground" />
                 复制地址
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer focus:bg-primary/10">
-                <ExternalLink className="mr-2 size-4 text-muted-foreground" />
-                在 Solscan 查看
+              <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/10">
+                <a
+                  href={`https://solscan.io/account/${walletAddress}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <ExternalLink className="mr-2 size-4 text-muted-foreground" />
+                  在 Solscan 查看
+                </a>
               </DropdownMenuItem>
               <DropdownMenuSeparator className="bg-border" />
               <DropdownMenuItem
-                onClick={handleDisconnect}
+                onClick={onDisconnect}
                 className="cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive"
               >
                 <LogOut className="mr-2 size-4" />
