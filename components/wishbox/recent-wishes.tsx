@@ -1,18 +1,20 @@
 "use client";
 
 import { WishCard, type Wish } from "./wish-card";
-import { Sparkles, Search } from "lucide-react";
+import { Sparkles, Search, Coins, Clock, Users } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
 interface RecentWishesProps {
   wishes: Wish[];
   onWishClick: (wish: Wish) => void;
+  sortBy?: "reward" | "time" | "contributors";
+  onSortChange?: (sort: "reward" | "time" | "contributors") => void;
 }
 
 const categoryFilters = ["All", "Development", "Design", "Translation", "Writing", "Data", "Research", "Other"];
 
-export function RecentWishes({ wishes, onWishClick }: RecentWishesProps) {
+export function RecentWishes({ wishes, onWishClick, sortBy = "reward", onSortChange }: RecentWishesProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
 
@@ -52,21 +54,67 @@ export function RecentWishes({ wishes, onWishClick }: RecentWishesProps) {
           />
         </div>
 
-        {/* Category Filters */}
-        <div className="flex flex-wrap gap-2">
-          {categoryFilters.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`rounded-lg border px-3 py-1.5 text-sm transition-all ${
-                activeCategory === cat
-                  ? "border-primary bg-primary/20 text-primary"
-                  : "border-glass-border bg-secondary/30 text-muted-foreground hover:border-primary/50"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        {/* Category Filters and Sort Controls */}
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Category Filters */}
+          <div className="flex flex-wrap gap-2">
+            {categoryFilters.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`rounded-lg border px-3 py-1.5 text-sm transition-all ${
+                  activeCategory === cat
+                    ? "border-primary bg-primary/20 text-primary"
+                    : "border-glass-border bg-secondary/30 text-muted-foreground hover:border-primary/50"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Divider */}
+          <div className="h-6 w-px bg-border" />
+
+          {/* Sort Controls */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Sort:</span>
+            <div className="flex gap-1">
+              <button
+                onClick={() => onSortChange?.("reward")}
+                className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-all ${
+                  sortBy === "reward"
+                    ? "bg-primary/20 text-primary border border-primary/50"
+                    : "border border-glass-border bg-secondary/30 text-muted-foreground hover:border-primary/50"
+                }`}
+              >
+                <Coins className="size-4" />
+                Bounty
+              </button>
+              <button
+                onClick={() => onSortChange?.("time")}
+                className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-all ${
+                  sortBy === "time"
+                    ? "bg-primary/20 text-primary border border-primary/50"
+                    : "border border-glass-border bg-secondary/30 text-muted-foreground hover:border-primary/50"
+                }`}
+              >
+                <Clock className="size-4" />
+                Recent
+              </button>
+              <button
+                onClick={() => onSortChange?.("contributors")}
+                className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-all ${
+                  sortBy === "contributors"
+                    ? "bg-primary/20 text-primary border border-primary/50"
+                    : "border border-glass-border bg-secondary/30 text-muted-foreground hover:border-primary/50"
+                }`}
+              >
+                <Users className="size-4" />
+                Hot
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 

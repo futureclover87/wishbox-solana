@@ -266,54 +266,16 @@ export default function WishboxPage() {
               </span>
             </button>
           </div>
-
-          {/* Sort Options - Only for Implementer Tab */}
-          {activeTab === "implementer" && (
-            <div className="flex items-center gap-2">
-              <ArrowUpDown className="size-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground mr-2">Sort by:</span>
-              <div className="flex rounded-lg border border-glass-border bg-glass-bg/50 p-0.5">
-                <button
-                  onClick={() => setSortBy("reward")}
-                  className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs transition-all ${
-                    sortBy === "reward"
-                      ? "bg-primary/20 text-primary"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  <Coins className="size-3" />
-                  Bounty
-                </button>
-                <button
-                  onClick={() => setSortBy("time")}
-                  className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs transition-all ${
-                    sortBy === "time"
-                      ? "bg-primary/20 text-primary"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  <Clock className="size-3" />
-                  Recent
-                </button>
-                <button
-                  onClick={() => setSortBy("contributors")}
-                  className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs transition-all ${
-                    sortBy === "contributors"
-                      ? "bg-primary/20 text-primary"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  <Users className="size-3" />
-                  Hot
-                </button>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Content based on active tab */}
         {activeTab === "implementer" ? (
-          <RecentWishes wishes={sortedWishes} onWishClick={handleWishClick} />
+          <RecentWishes 
+            wishes={sortedWishes} 
+            onWishClick={handleWishClick}
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+          />
         ) : (
           <RequesterView onCreateClick={() => setIsCreateSheetOpen(true)} wishes={wishes} />
         )}
