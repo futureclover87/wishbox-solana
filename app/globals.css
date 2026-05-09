@@ -216,14 +216,35 @@
 }
 
 .wallet-adapter-modal-button-close {
-  background: oklch(0.22 0.03 280) !important;
-  color: oklch(0.65 0.02 280) !important;
+  position: absolute !important;
+  top: 1rem !important;
+  right: 1rem !important;
+  z-index: 10 !important;
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: oklch(0.25 0.04 280 / 0.7) !important;
+  border: 1px solid oklch(0.4 0.05 280 / 0.5) !important;
+  color: oklch(0.95 0.01 280) !important;
+  border-radius: 0.5rem !important;
+  cursor: pointer !important;
   transition: all 0.2s ease !important;
+  pointer-events: auto !important;
 }
 
 .wallet-adapter-modal-button-close:hover {
-  background: oklch(0.3 0.04 280) !important;
-  color: oklch(0.95 0.01 280) !important;
+  background: oklch(0.35 0.045 280) !important;
+  border-color: oklch(0.7 0.2 240 / 0.6) !important;
+  color: oklch(0.7 0.2 240) !important;
+  box-shadow: 0 0 15px oklch(0.7 0.2 240 / 0.3) !important;
+}
+
+.wallet-adapter-modal-button-close:active {
+  transform: scale(0.95) !important;
 }
 
 .wallet-adapter-modal-middle-button {
