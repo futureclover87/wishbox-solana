@@ -1,7 +1,7 @@
 "use client";
 
 import { WishCard, type Wish } from "./wish-card";
-import { Sparkles, Search, Coins, Clock, Users } from "lucide-react";
+import { Search, Coins, Clock, Users } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
@@ -28,19 +28,6 @@ export function RecentWishes({ wishes, onWishClick, sortBy = "reward", onSortCha
 
   return (
     <div className="w-full">
-      {/* Section Header */}
-      <div className="mb-6 flex items-center gap-3">
-        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <Sparkles className="size-4 text-primary" />
-          <span className="text-sm font-medium">Task Board</span>
-          <span className="rounded-full bg-primary/20 px-2 py-0.5 text-xs text-primary">
-            {wishes.length}
-          </span>
-        </div>
-        <div className="h-px flex-1 bg-gradient-to-l from-transparent via-border to-transparent" />
-      </div>
-
       {/* Search and Filter */}
       <div className="mb-6 space-y-4">
         {/* Search */}
