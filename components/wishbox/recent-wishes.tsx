@@ -12,7 +12,7 @@ interface RecentWishesProps {
   onSortChange?: (sort: "reward" | "time" | "contributors") => void;
 }
 
-const categoryFilters = ["All", "Development", "Design", "Translation", "Writing", "Data", "Research", "Other"];
+const categoryFilters = ["All", "Development", "Design", "Translation", "Writing", "Other"];
 
 export function RecentWishes({ wishes, onWishClick, sortBy = "reward", onSortChange }: RecentWishesProps) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -55,7 +55,7 @@ export function RecentWishes({ wishes, onWishClick, sortBy = "reward", onSortCha
         </div>
 
         {/* Category Filters and Sort Controls */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           {/* Category Filters */}
           <div className="flex flex-wrap gap-2">
             {categoryFilters.map((cat) => (
@@ -72,9 +72,6 @@ export function RecentWishes({ wishes, onWishClick, sortBy = "reward", onSortCha
               </button>
             ))}
           </div>
-
-          {/* Divider */}
-          <div className="h-6 w-px bg-border" />
 
           {/* Sort Controls */}
           <div className="flex items-center gap-2">
