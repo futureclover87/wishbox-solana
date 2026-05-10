@@ -21,66 +21,78 @@ const nftBadges = [
   { id: "3", name: "Trusted", icon: Shield, color: "text-green-400", description: "Verified contributor" },
 ];
 
-// Pandora's Box Logo Component
-function PandoraLogo() {
+// WishBox SVG Logo — transparent background, dark-theme ready
+function WishboxLogo() {
   return (
     <div className="relative flex size-10 items-center justify-center">
-      {/* Outer glow */}
-      <div className="absolute inset-0 rounded-xl bg-primary/30 blur-md" />
-      
-      {/* Box shape */}
+      {/* glow halo */}
+      <div className="absolute inset-0 rounded-full bg-[#4f6ef7]/20 blur-md" />
       <svg
-        viewBox="0 0 40 40"
-        className="relative size-10"
+        viewBox="0 0 48 48"
+        className="relative size-10 drop-shadow-[0_0_6px_rgba(99,130,255,0.7)]"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* Box base with gradient */}
         <defs>
-          <linearGradient id="boxGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="oklch(0.7 0.2 240)" />
-            <stop offset="100%" stopColor="oklch(0.6 0.18 280)" />
+          <linearGradient id="lampGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#60a5fa" />
+            <stop offset="50%" stopColor="#6366f1" />
+            <stop offset="100%" stopColor="#a855f7" />
           </linearGradient>
-          <linearGradient id="lidGradient" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="oklch(0.6 0.18 280)" />
-            <stop offset="100%" stopColor="oklch(0.7 0.2 240)" />
+          <linearGradient id="smokeGrad" x1="0%" y1="100%" x2="30%" y2="0%">
+            <stop offset="0%" stopColor="#6366f1" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#60a5fa" stopOpacity="0.3" />
           </linearGradient>
         </defs>
-        
-        {/* Box body */}
+
+        {/* ── Lamp base pedestal ── */}
+        <ellipse cx="24" cy="38" rx="8" ry="2" fill="url(#lampGrad)" opacity="0.5" />
+        <rect x="21" y="33" width="6" height="5" rx="1" fill="url(#lampGrad)" opacity="0.8" />
+
+        {/* ── Lamp body ── */}
         <path
-          d="M6 18L6 32C6 33.1 6.9 34 8 34H32C33.1 34 34 33.1 34 32V18"
-          stroke="url(#boxGradient)"
-          strokeWidth="2"
-          strokeLinecap="round"
-          fill="oklch(0.18 0.03 280 / 0.6)"
+          d="M10 28 Q8 24 12 22 Q16 20 24 21 Q32 22 36 24 Q39 26 36 29 Q32 33 24 33 Q16 33 10 28 Z"
+          fill="url(#lampGrad)"
+          opacity="0.95"
         />
-        
-        {/* Box lid - slightly open */}
+
+        {/* ── Lamp lid / cap ── */}
+        <ellipse cx="24" cy="21" rx="6" ry="3" fill="url(#lampGrad)" />
+        <ellipse cx="24" cy="19" rx="2.5" ry="2.5" fill="#7dd3fc" />
+
+        {/* ── Handle (left) ── */}
         <path
-          d="M4 16L8 8C8.5 7 9.5 6 11 6H29C30.5 6 31.5 7 32 8L36 16"
-          stroke="url(#lidGradient)"
+          d="M10 27 Q4 25 5 20 Q6 15 11 18"
+          stroke="url(#lampGrad)"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          fill="none"
+        />
+
+        {/* ── Spout (right) ── */}
+        <path
+          d="M36 25 Q42 22 40 18"
+          stroke="url(#lampGrad)"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          fill="none"
+        />
+
+        {/* ── Smoke / magic stream ── */}
+        <path
+          d="M40 17 Q38 12 41 8 Q43 4 40 2"
+          stroke="url(#smokeGrad)"
           strokeWidth="2"
           strokeLinecap="round"
           fill="none"
         />
-        
-        {/* Lid top line */}
+
+        {/* ── Star sparkle ── */}
         <path
-          d="M4 16H36"
-          stroke="url(#boxGradient)"
-          strokeWidth="2"
-          strokeLinecap="round"
+          d="M40 2 L40.8 4.5 L43.5 4.5 L41.4 6.2 L42.2 8.8 L40 7.2 L37.8 8.8 L38.6 6.2 L36.5 4.5 L39.2 4.5 Z"
+          fill="#93c5fd"
+          opacity="0.95"
         />
-        
-        {/* Magic sparkles escaping */}
-        <circle cx="16" cy="12" r="1.5" fill="oklch(0.7 0.2 240)" className="animate-pulse" />
-        <circle cx="24" cy="10" r="1" fill="oklch(0.6 0.18 280)" className="animate-pulse" style={{ animationDelay: "0.2s" }} />
-        <circle cx="20" cy="8" r="1.2" fill="oklch(0.7 0.2 240)" className="animate-pulse" style={{ animationDelay: "0.4s" }} />
-        
-        {/* Lock/clasp detail */}
-        <rect x="17" y="22" width="6" height="4" rx="1" fill="url(#boxGradient)" />
-        <circle cx="20" cy="24" r="1" fill="oklch(0.18 0.03 280)" />
       </svg>
     </div>
   );
@@ -133,13 +145,13 @@ export function Header({
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <PandoraLogo />
+          <WishboxLogo />
           <div className="flex flex-col">
             <span className="text-xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              Wishbox
+              WishBox
             </span>
             <span className="text-[10px] tracking-wider text-muted-foreground uppercase">
-              Pandora&apos;s Bounty
+              Connect Wishes, Create Value
             </span>
           </div>
         </div>
