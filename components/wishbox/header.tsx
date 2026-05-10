@@ -9,10 +9,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Wallet, ChevronDown, Copy, ExternalLink, LogOut, Award, Shield, Zap, Star } from "lucide-react";
+import { Wallet, ChevronDown, Copy, ExternalLink, LogOut, Award, Shield, Zap, Star, HandHeart, Coins, CheckCircle2, ArrowRight } from "lucide-react";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import { useCallback } from "react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { useCallback, useEffect, useState } from "react";
 
 // Mock NFT Badges data
 const nftBadges = [
@@ -86,9 +86,30 @@ function PandoraLogo() {
   );
 }
 
-export function Header() {
+interface HeaderProps {
+  myClaimedCount?: number;
+  myClaimedInProgress?: number;
+  myClaimedEarned?: number;
+  myFundedCount?: number;
+  myFundedActive?: number;
+  myFundedBounty?: number;
+  onGoToClaims?: () => void;
+  onGoToFunded?: () => void;
+}
+
+export function Header({
+  myClaimedCount = 0,
+  myClaimedInProgress = 0,
+  myClaimedEarned = 0,
+  myFundedCount = 0,
+  myFundedActive = 0,
+  myFundedBounty = 0,
+  onGoToClaims,
+  onGoToFunded,
+}: HeaderProps) {
   const { publicKey, disconnect, connected } = useWallet();
-  const { setVisible } = useWalletModal();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
 
   const walletAddress = publicKey?.toBase58() || "";
 
@@ -96,10 +117,6 @@ export function Header() {
     if (!address) return "";
     return `${address.slice(0, 4)}...${address.slice(-4)}`;
   };
-
-  const handleConnect = useCallback(() => {
-    setVisible(true);
-  }, [setVisible]);
 
   const handleDisconnect = useCallback(() => {
     disconnect();
@@ -127,15 +144,23 @@ export function Header() {
           </div>
         </div>
 
-        {/* Connect Wallet Button / Account Dropdown */}
-        {!connected ? (
-          <Button
-            onClick={handleConnect}
-            className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_var(--glow-primary)] transition-all hover:shadow-[0_0_30px_var(--glow-primary)]"
+        {/* Connect Wallet Button / Account Dropdown
+            `mounted` guard prevents SSR/client hydration mismatch:
+            WalletMultiButton injects its own <i> start icon on the client
+            which differs from what the server renders if we pass children.
+            Before mount both server and client agree on the static placeholder. */}
+        {!mounted ? (
+          <button
+            className="wallet-adapter-button wallet-adapter-button-trigger"
+            disabled
+            aria-label="Connect Wallet"
           >
-            <Wallet className="mr-2 size-4" />
             Connect Wallet
-          </Button>
+          </button>
+        ) : !connected ? (
+          <div className="wishbox-wallet-btn">
+            <WalletMultiButton />
+          </div>
         ) : (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -152,51 +177,127 @@ export function Header() {
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="w-72 border-glass-border bg-popover backdrop-blur-xl"
+              className="w-80 border-glass-border bg-popover backdrop-blur-xl"
             >
-              <DropdownMenuLabel className="text-muted-foreground">
-                My Account
-              </DropdownMenuLabel>
+              {/* Account header */}
+              <div className="px-3 pt-3 pb-2">
+                <p className="text-xs font-medium text-muted-foreground mb-1">My Account</p>
+                <p className="font-mono text-sm text-foreground">{formatAddress(walletAddress)}</p>
+              </div>
+
               <DropdownMenuSeparator className="bg-border" />
-              
-              {/* NFT Badges Section */}
+
+              {/* ── My Claims ─────────────────────────────────────────────── */}
               <div className="px-2 py-2">
-                <div className="flex items-center gap-2 mb-2 px-2">
-                  <Award className="size-4 text-accent" />
-                  <span className="text-xs font-medium text-muted-foreground">NFT Badges</span>
+                <div className="flex items-center justify-between mb-2 px-1">
+                  <div className="flex items-center gap-1.5">
+                    <HandHeart className="size-3.5 text-accent" />
+                    <span className="text-xs font-semibold text-foreground">My Claims</span>
+                  </div>
+                  {myClaimedCount > 0 && (
+                    <span className="flex size-4 items-center justify-center rounded-full bg-accent text-[9px] font-bold text-accent-foreground">
+                      {myClaimedCount}
+                    </span>
+                  )}
                 </div>
-                <div className="space-y-1">
+                <div className="grid grid-cols-3 gap-2 mb-2">
+                  <div className="rounded-lg bg-secondary/50 p-2 text-center">
+                    <p className="font-mono text-base font-bold text-accent">{myClaimedCount}</p>
+                    <p className="text-[10px] text-muted-foreground">Total</p>
+                  </div>
+                  <div className="rounded-lg bg-secondary/50 p-2 text-center">
+                    <p className="font-mono text-base font-bold text-yellow-400">{myClaimedInProgress}</p>
+                    <p className="text-[10px] text-muted-foreground">In Progress</p>
+                  </div>
+                  <div className="rounded-lg bg-secondary/50 p-2 text-center">
+                    <p className="font-mono text-base font-bold text-green-400">{myClaimedEarned.toFixed(1)}</p>
+                    <p className="text-[10px] text-muted-foreground">SOL Earned</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => { onGoToClaims?.(); }}
+                  className="flex w-full items-center justify-between rounded-lg border border-accent/30 bg-accent/5 px-3 py-2 text-sm text-accent transition-colors hover:bg-accent/10"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <HandHeart className="size-3.5" />
+                    View My Claims
+                  </span>
+                  <ArrowRight className="size-3.5" />
+                </button>
+              </div>
+
+              <DropdownMenuSeparator className="bg-border" />
+
+              {/* ── My Funded Tasks ───────────────────────────────────────── */}
+              <div className="px-2 py-2">
+                <div className="flex items-center justify-between mb-2 px-1">
+                  <div className="flex items-center gap-1.5">
+                    <Coins className="size-3.5 text-primary" />
+                    <span className="text-xs font-semibold text-foreground">My Funded Tasks</span>
+                  </div>
+                  {myFundedCount > 0 && (
+                    <span className="flex size-4 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-primary-foreground">
+                      {myFundedCount}
+                    </span>
+                  )}
+                </div>
+                <div className="grid grid-cols-3 gap-2 mb-2">
+                  <div className="rounded-lg bg-secondary/50 p-2 text-center">
+                    <p className="font-mono text-base font-bold text-primary">{myFundedCount}</p>
+                    <p className="text-[10px] text-muted-foreground">Posted</p>
+                  </div>
+                  <div className="rounded-lg bg-secondary/50 p-2 text-center">
+                    <p className="font-mono text-base font-bold text-green-400">{myFundedActive}</p>
+                    <p className="text-[10px] text-muted-foreground">Active</p>
+                  </div>
+                  <div className="rounded-lg bg-secondary/50 p-2 text-center">
+                    <p className="font-mono text-base font-bold text-yellow-400">{myFundedBounty.toFixed(1)}</p>
+                    <p className="text-[10px] text-muted-foreground">SOL Funded</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => { onGoToFunded?.(); }}
+                  className="flex w-full items-center justify-between rounded-lg border border-primary/30 bg-primary/5 px-3 py-2 text-sm text-primary transition-colors hover:bg-primary/10"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <Coins className="size-3.5" />
+                    View My Funded
+                  </span>
+                  <ArrowRight className="size-3.5" />
+                </button>
+              </div>
+
+              <DropdownMenuSeparator className="bg-border" />
+
+              {/* ── NFT Badges ────────────────────────────────────────────── */}
+              <div className="px-2 py-2">
+                <div className="flex items-center gap-1.5 mb-2 px-1">
+                  <Award className="size-3.5 text-yellow-400" />
+                  <span className="text-xs font-semibold text-foreground">Badges</span>
+                </div>
+                <div className="flex gap-2">
                   {nftBadges.map((badge) => {
                     const BadgeIcon = badge.icon;
                     return (
-                      <div
-                        key={badge.id}
-                        className="flex items-center gap-3 rounded-lg bg-secondary/50 px-3 py-2"
+                      <div key={badge.id} title={badge.description}
+                        className="flex flex-1 flex-col items-center gap-1 rounded-lg bg-secondary/50 py-2"
                       >
-                        <div className={`flex size-8 items-center justify-center rounded-lg bg-glass-bg border border-glass-border`}>
-                          <BadgeIcon className={`size-4 ${badge.color}`} />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium text-foreground">{badge.name}</p>
-                          <p className="text-xs text-muted-foreground">{badge.description}</p>
-                        </div>
+                        <BadgeIcon className={`size-4 ${badge.color}`} />
+                        <span className="text-[10px] text-muted-foreground">{badge.name}</span>
                       </div>
                     );
                   })}
                 </div>
               </div>
-              
+
               <DropdownMenuSeparator className="bg-border" />
-              <DropdownMenuItem onClick={handleCopyAddress} className="cursor-pointer focus:bg-primary/10">
+
+              <DropdownMenuItem onClick={handleCopyAddress} className="cursor-pointer focus:bg-secondary/50">
                 <Copy className="mr-2 size-4 text-muted-foreground" />
                 Copy Address
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/10">
-                <a
-                  href={`https://solscan.io/account/${walletAddress}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+              <DropdownMenuItem asChild className="cursor-pointer focus:bg-secondary/50">
+                <a href={`https://solscan.io/account/${walletAddress}`} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="mr-2 size-4 text-muted-foreground" />
                   View on Solscan
                 </a>

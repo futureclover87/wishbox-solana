@@ -1,7 +1,7 @@
 "use client";
 
 import { WishCard, type Wish } from "./wish-card";
-import { Search, Coins, Clock, Users } from "lucide-react";
+import { Search, Coins, Clock, Sparkles } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
@@ -85,17 +85,6 @@ export function RecentWishes({ wishes, onWishClick, sortBy = "reward", onSortCha
               >
                 <Clock className="size-4" />
                 Recent
-              </button>
-              <button
-                onClick={() => onSortChange?.("contributors")}
-                className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-all ${
-                  sortBy === "contributors"
-                    ? "bg-primary/20 text-primary border border-primary/50"
-                    : "border border-glass-border bg-secondary/30 text-muted-foreground hover:border-primary/50"
-                }`}
-              >
-                <Users className="size-4" />
-                Hot
               </button>
             </div>
           </div>

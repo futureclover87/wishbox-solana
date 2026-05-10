@@ -208,11 +208,22 @@
   border-radius: 0.75rem !important;
   font-weight: 500 !important;
   transition: all 0.2s ease !important;
+  box-shadow: 0 0 20px oklch(0.7 0.2 240 / 0.5) !important;
 }
 
 .wallet-adapter-button-trigger:hover {
   background: oklch(0.65 0.18 240) !important;
-  box-shadow: 0 0 20px oklch(0.7 0.2 240 / 0.5) !important;
+  box-shadow: 0 0 30px oklch(0.7 0.2 240 / 0.6) !important;
+}
+
+/* Wrapper applied in header.tsx for precise height alignment */
+.wishbox-wallet-btn .wallet-adapter-button-trigger {
+  height: 2.5rem !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  font-size: 0.875rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
 }
 
 .wallet-adapter-modal-button-close {

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
-import { WalletProvider } from '@/components/providers/wallet-provider'
+import { WalletContextProvider } from '@/components/WalletContextProvider'
 import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
@@ -38,9 +38,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark bg-background">
       <body className="font-sans antialiased bg-background text-foreground">
-        <WalletProvider>
+        <WalletContextProvider>
           {children}
-        </WalletProvider>
+        </WalletContextProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
