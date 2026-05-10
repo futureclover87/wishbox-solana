@@ -8,13 +8,13 @@ import { useState } from "react";
 interface RecentWishesProps {
   wishes: Wish[];
   onWishClick: (wish: Wish) => void;
-  sortBy?: "reward" | "time" | "contributors";
-  onSortChange?: (sort: "reward" | "time" | "contributors") => void;
+  sortBy?: "bounty" | "time" | "contributors";
+  onSortChange?: (sort: "bounty" | "time" | "contributors") => void;
 }
 
 const categoryFilters = ["All", "Development", "Design", "Translation", "Writing", "Other"];
 
-export function RecentWishes({ wishes, onWishClick, sortBy = "reward", onSortChange }: RecentWishesProps) {
+export function RecentWishes({ wishes, onWishClick, sortBy = "bounty", onSortChange }: RecentWishesProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeOnly, setActiveOnly] = useState(false);
@@ -24,7 +24,7 @@ export function RecentWishes({ wishes, onWishClick, sortBy = "reward", onSortCha
       wish.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       wish.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = activeCategory === "All" || wish.category === activeCategory;
-    const matchesActive = !activeOnly || wish.status === "open";
+    const matchesActive = !activeOnly || wish.status === "Open";
     return matchesSearch && matchesCategory && matchesActive;
   });
 
@@ -82,9 +82,9 @@ export function RecentWishes({ wishes, onWishClick, sortBy = "reward", onSortCha
             <span className="text-sm text-muted-foreground">Sort:</span>
             <div className="flex gap-1">
               <button
-                onClick={() => onSortChange?.("reward")}
+                onClick={() => onSortChange?.("bounty")}
                 className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-all ${
-                  sortBy === "reward"
+                  sortBy === "bounty"
                     ? "bg-primary/20 text-primary border border-primary/50"
                     : "border border-glass-border bg-secondary/30 text-muted-foreground hover:border-primary/50"
                 }`}

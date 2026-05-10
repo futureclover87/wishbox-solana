@@ -28,118 +28,118 @@ const initialWishes: Wish[] = [
     title: "Write unit tests for my Rust smart contract",
     description: "Need comprehensive unit tests for my Solana smart contract covering all critical paths including transfer, staking, and withdrawal functions.",
     category: "Development",
-    reward: 2.5,
+    bounty: 2.5,
     contributors: 3,
     walletAddress: "7xKXtJqF4j9sM2kLpN8vR3wE5uY6hG1cD",
     timestamp: "2 min ago",
     deadline: "2026-06-09",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     id: "2",
     title: "Translate my whitepaper from English to Spanish",
     description: "A 15-page DeFi project whitepaper needs professional Spanish translation while maintaining technical terminology accuracy.",
     category: "Translation",
-    reward: 1.8,
+    bounty: 1.8,
     contributors: 5,
     walletAddress: "9mNbVcXzAsD2fGhJkL1qWeRtYuIoP5pO",
-    claimerAddress: "HnKr3zXpM2sF9bLqWeRtYuIoP1asDfGj",
+    builder: "HnKr3zXpM2sF9bLqWeRtYuIoP1asDfGj",
     timestamp: "15 min ago",
     deadline: "2026-05-25",
     isAnonymous: true,
-    status: "claimed",
+    status: "Submitted",
   },
   {
     id: "3",
     title: "Design 5 cyberpunk NFT avatar concepts",
     description: "Need 5 different cyberpunk-themed NFT avatar concept designs for AI generation reference. High quality artwork required.",
     category: "Design",
-    reward: 3.2,
+    bounty: 3.2,
     contributors: 8,
     walletAddress: DEMO_REQUESTER,
     timestamp: "1 hour ago",
     deadline: "2026-05-20",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     id: "4",
     title: "Compile data on 100 Solana ecosystem projects",
     description: "Collect and organize basic info on 100 Solana projects including name, website, Twitter, TVL, and other key metrics.",
     category: "Data",
-    reward: 0.8,
+    bounty: 0.8,
     contributors: 2,
     walletAddress: "5tYuIoPaSdFgHjKlZxCvBnM8qWeRtYu",
     timestamp: "2 hours ago",
     deadline: "2026-06-09",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     id: "5",
     title: "Write an in-depth analysis on Solana MEV",
     description: "Need a ~3000 word technical article analyzing the current state of MEV on Solana, major players, and future trends.",
     category: "Writing",
-    reward: 5.0,
+    bounty: 5.0,
     contributors: 2,
     walletAddress: "2wErTyUiOpAsDfGhJkLzXcVbNm9qWeR",
     timestamp: "3 hours ago",
     deadline: "2026-05-15",
     isAnonymous: true,
-    status: "open",
+    status: "Open",
   },
   {
     id: "6",
     title: "UX research on 10 Solana wallets",
     description: "Compare and analyze 10 popular Solana wallets for features, UI/UX, security, etc. Deliver a detailed research report.",
     category: "Research",
-    reward: 1.2,
+    bounty: 1.2,
     contributors: 4,
     walletAddress: "8iOpAsDfGhJkLzXcVbNm1qWeRtYuIoP",
     timestamp: "5 hours ago",
     deadline: "2026-04-30",
     isAnonymous: false,
-    status: "completed",
+    status: "Settled",
   },
   {
     id: "7",
     title: "Debug CPI error in my Anchor project",
     description: "My Anchor project throws an error when calling CPI. Need an experienced developer to help troubleshoot and fix the issue.",
     category: "Development",
-    reward: 1.5,
+    bounty: 1.5,
     contributors: 1,
     walletAddress: "4rTyUiOpAsDfGhJkLzXcVbNm2qWeRtY",
     timestamp: "6 hours ago",
     deadline: "2026-05-12",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     id: "8",
     title: "Design a landing page for my dApp",
     description: "Need a modern Web3-style landing page design including Hero, Features, Tokenomics, and other sections.",
     category: "Design",
-    reward: 1.0,
+    bounty: 1.0,
     contributors: 19,
     walletAddress: DEMO_REQUESTER,
     timestamp: "8 hours ago",
     deadline: "2026-06-09",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     id: "9",
     title: "Proofread a DAO governance proposal",
     description: "Need grammar and logic proofreading for a DAO governance proposal to ensure clear and professional expression.",
     category: "Writing",
-    reward: 0.5,
+    bounty: 0.5,
     contributors: 1,
     walletAddress: "1pAsDfGhJkLzXcVbNm4qWeRtYuIoPaS",
     timestamp: "10 hours ago",
     deadline: "2026-05-17",
     isAnonymous: true,
-    status: "open",
+    status: "Open",
   },
 
   // ── New tasks ────────────────────────────────────────────────────────────
@@ -148,52 +148,52 @@ const initialWishes: Wish[] = [
     title: "Audit smart contract for reentrancy vulnerabilities",
     description: "Full security audit of a Solana token vesting contract — check for reentrancy, integer overflow, and unauthorized signer access.",
     category: "Security",
-    reward: 4.0,
+    bounty: 4.0,
     contributors: 6,
     walletAddress: "BkR7mPaT3nWsX1eVqLzYcDfGhJuIoN2p",
     timestamp: "12 hours ago",
     deadline: "2026-05-14",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     id: "11",
     title: "Design tokenomics model for a new DeFi protocol",
     description: "Create a detailed tokenomics model covering emission schedule, staking incentives, governance allocation, and treasury management.",
     category: "Research",
-    reward: 2.0,
+    bounty: 2.0,
     contributors: 3,
     walletAddress: "CvN8sQrLpM4xT2bFgHjKzXeWaYuIoDf1",
     timestamp: "14 hours ago",
     deadline: "2026-06-09",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     id: "12",
     title: "Build a Discord bot for DAO governance notifications",
     description: "Bot should listen to on-chain proposal events and post formatted summaries in a Discord channel with vote deadlines and links.",
     category: "Development",
-    reward: 1.8,
+    bounty: 1.8,
     contributors: 7,
     walletAddress: "DqM5tXwP9nVrS3aFhJkLzYcGbNuIeO6p",
     timestamp: "16 hours ago",
     deadline: "2026-05-28",
     isAnonymous: true,
-    status: "open",
+    status: "Open",
   },
   {
     id: "13",
     title: "Translate Solana core docs sections to Mandarin",
     description: "Translate the Program Derived Addresses and Cross-Program Invocations sections of the Solana developer docs into Mandarin Chinese.",
     category: "Translation",
-    reward: 0.8,
+    bounty: 0.8,
     contributors: 2,
     walletAddress: "ErL6uYwQ1mWsT4bGiJkNzXcFhPaVoDe7",
     timestamp: "18 hours ago",
     deadline: "2026-07-10",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     // DEMO claimed — In Progress
@@ -201,53 +201,53 @@ const initialWishes: Wish[] = [
     title: "Write a beginner's guide to Solana staking",
     description: "Comprehensive beginner guide covering what staking is, how to choose validators, risks, and step-by-step instructions with screenshots.",
     category: "Writing",
-    reward: 1.5,
+    bounty: 1.5,
     contributors: 4,
     walletAddress: "FsN7vZxR2nYtU5cHjKoMzAeGbWaPiDf8",
-    claimerAddress: DEMO_CLAIMER,
+    builder: DEMO_CLAIMER,
     timestamp: "20 hours ago",
     deadline: "2026-05-30",
     isAnonymous: false,
-    status: "claimed",
+    status: "Accepted",
   },
   {
     id: "15",
     title: "Design animated sticker pack for Telegram community",
     description: "Create 12 unique animated stickers for a Solana project community Telegram group. Delivery in Webp and TGS formats.",
     category: "Design",
-    reward: 2.5,
+    bounty: 2.5,
     contributors: 5,
     walletAddress: "GtO8wAxS3oZuV6dIkLpNzBeHcXbQjEg9",
     timestamp: "22 hours ago",
     deadline: "2026-06-15",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     id: "16",
     title: "Research top 20 Solana DeFi yield strategies",
     description: "Analyze and compare the top 20 yield strategies on Solana DeFi protocols. Include APY, risks, TVL, and sustainability assessment.",
     category: "Research",
-    reward: 1.2,
+    bounty: 1.2,
     contributors: 3,
     walletAddress: "HuP9xByT4pAuW7eJlMqOzCfIdYcRkFh1",
     timestamp: "1 day ago",
     deadline: "2026-06-01",
     isAnonymous: true,
-    status: "open",
+    status: "Open",
   },
   {
     id: "17",
     title: "Plan a Twitter thread strategy for NFT launch",
     description: "Create a 4-week Twitter content calendar and 3 sample threads targeting collectors, traders, and builders in the Solana NFT space.",
     category: "Marketing",
-    reward: 0.6,
+    bounty: 0.6,
     contributors: 2,
     walletAddress: "IvQ1yCzU5qBvX8fKmNrPzDgJeZdSlGi2",
     timestamp: "1 day ago",
     deadline: "2026-05-20",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     // DEMO claimed — In Progress
@@ -255,145 +255,145 @@ const initialWishes: Wish[] = [
     title: "Fix responsive layout bugs in React dApp frontend",
     description: "Multiple responsive breakpoint issues across mobile and tablet. Requires Tailwind CSS fixes and cross-browser QA. ~20 bug tickets.",
     category: "Development",
-    reward: 2.0,
+    bounty: 2.0,
     contributors: 9,
     walletAddress: "JwR2zDaV6rCwY9gLnOsPzEhKfAeMtHj3",
-    claimerAddress: DEMO_CLAIMER,
+    builder: DEMO_CLAIMER,
     timestamp: "1 day ago",
     deadline: "2026-05-22",
     isAnonymous: false,
-    status: "claimed",
+    status: "Accepted",
   },
   {
     id: "19",
     title: "Write API documentation for an on-chain program",
     description: "Produce structured API docs covering all instructions, accounts, errors, and example code snippets for a Solana lending protocol.",
     category: "Writing",
-    reward: 1.5,
+    bounty: 1.5,
     contributors: 2,
     walletAddress: "KxS3aEbW7sDxZ1hMoTqPzFiLgBfNuIk4",
     timestamp: "1 day ago",
     deadline: "2026-06-09",
     isAnonymous: true,
-    status: "open",
+    status: "Open",
   },
   {
     id: "20",
     title: "Compile list of active Solana ecosystem grant programs",
     description: "Identify and document all active grant programs in the Solana ecosystem — Solana Foundation, ecosystem DAOs, and protocol-specific grants.",
     category: "Data",
-    reward: 0.5,
+    bounty: 0.5,
     contributors: 1,
     walletAddress: "LyT4bFcX8tEyA2iNpUrQzGjMhCgOvJl5",
     timestamp: "2 days ago",
     deadline: "2026-07-10",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     id: "21",
     title: "Design banner set for NFT collection launch event",
     description: "Create 6 promotional banners in multiple sizes (Twitter, Discord, website hero) for an upcoming NFT collection mint event.",
     category: "Design",
-    reward: 1.8,
+    bounty: 1.8,
     contributors: 6,
     walletAddress: DEMO_REQUESTER,
     timestamp: "2 days ago",
     deadline: "2026-05-18",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     id: "22",
     title: "Build a CLI tool for batch SPL token management",
     description: "Rust-based CLI for bulk operations: create, mint, freeze, burn, and transfer SPL tokens across multiple wallets via CSV input.",
     category: "Development",
-    reward: 3.5,
+    bounty: 3.5,
     contributors: 4,
     walletAddress: "NaV6dHeZ1vGaC4kPqWtSzIlOjEiQxLn7",
     timestamp: "2 days ago",
     deadline: "2026-06-20",
     isAnonymous: true,
-    status: "open",
+    status: "Open",
   },
   {
     id: "23",
     title: "Proofread and edit VC pitch deck for Web3 startup",
     description: "15-slide pitch deck needs editing for clarity, grammar, and persuasive tone. Industry knowledge of DeFi and token models helpful.",
     category: "Writing",
-    reward: 0.8,
+    bounty: 0.8,
     contributors: 1,
     walletAddress: "ObW7eIfA2wHbD5lQrXuTzJmPkFjRyMo8",
     timestamp: "2 days ago",
     deadline: "2026-05-16",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     id: "24",
     title: "Translate project blog posts to Japanese and Korean",
     description: "Translate 3 existing blog posts (total ~5,000 words) into both Japanese and Korean for community outreach in East Asian markets.",
     category: "Translation",
-    reward: 1.2,
+    bounty: 1.2,
     contributors: 3,
     walletAddress: "PcX8fJgB3xIcE6mRsYvUzKnQlGkStNp9",
-    claimerAddress: "QdY9gKhC4yJdF7nStZwVaLoRmHlTuOq1",
+    builder: "QdY9gKhC4yJdF7nStZwVaLoRmHlTuOq1",
     timestamp: "3 days ago",
     deadline: "2026-06-05",
     isAnonymous: false,
-    status: "claimed",
+    status: "Accepted",
   },
   {
     id: "25",
     title: "Create educational video script on DeFi basics",
     description: "Write a 10-minute YouTube explainer script covering liquidity pools, AMMs, yield farming, and impermanent loss — aimed at beginners.",
     category: "Writing",
-    reward: 0.9,
+    bounty: 0.9,
     contributors: 2,
     walletAddress: "ReZ1hLiD5zKeFa8oTuAwMpSsNjIvPbr2",
     timestamp: "3 days ago",
     deadline: "2026-06-01",
     isAnonymous: true,
-    status: "open",
+    status: "Open",
   },
   {
     id: "26",
     title: "Audit Anchor program PDA derivation and signer authority",
     description: "Review a staking program's PDA seeds, bump storage, and signer checks for potential privilege escalation or account substitution attacks.",
     category: "Security",
-    reward: 3.0,
+    bounty: 3.0,
     contributors: 5,
     walletAddress: "SfA2iMjE6aLfGb9pUvBxNqTtOkJwQcs3",
     timestamp: "3 days ago",
     deadline: "2026-05-14",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     id: "27",
     title: "Design 3D avatar concepts for metaverse integration",
     description: "Concept designs for 4 unique 3D avatars suitable for Solana metaverse platforms. Provide reference sheets with front, side, and back views.",
     category: "Design",
-    reward: 4.0,
+    bounty: 4.0,
     contributors: 7,
     walletAddress: "TgB3jNkF7bMgHc1qVwCyOpUuPlKxRdt4",
     timestamp: "4 days ago",
     deadline: "2026-07-01",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     id: "28",
     title: "Research institutional adoption trends on Solana",
     description: "Survey recent institutional investments, custody solutions, and enterprise deployments on Solana. Deliver a 2,000-word analytical report.",
     category: "Research",
-    reward: 1.5,
+    bounty: 1.5,
     contributors: 2,
     walletAddress: "UhC4kOlG8cNhId2rWxDzPqVvQmLySetF",
     timestamp: "4 days ago",
     deadline: "2026-06-30",
     isAnonymous: true,
-    status: "open",
+    status: "Open",
   },
   {
     // DEMO completed — Delivered (shows in My Claims as "Completed")
@@ -401,27 +401,27 @@ const initialWishes: Wish[] = [
     title: "Build a token swap UI component with wallet integration",
     description: "React component for token swaps via Jupiter aggregator — token selector, slippage control, price impact display, and wallet sign flow.",
     category: "Development",
-    reward: 2.5,
+    bounty: 2.5,
     contributors: 12,
     walletAddress: "ViD5lPmH9dOiJe3sXyEaPrWwRnMzTfuG",
-    claimerAddress: DEMO_CLAIMER,
+    builder: DEMO_CLAIMER,
     timestamp: "5 days ago",
     deadline: "2026-04-15",
     isAnonymous: false,
-    status: "completed",
+    status: "Settled",
   },
   {
     id: "30",
     title: "Compile validator performance benchmarks report",
     description: "Gather and present block production rates, skip rates, and hardware specs for the top 50 Solana validators over the past 3 months.",
     category: "Data",
-    reward: 0.7,
+    bounty: 0.7,
     contributors: 1,
     walletAddress: "WjE6mQnI1ePjKf4tYzFbQsXxSoNaUgvH",
     timestamp: "5 days ago",
     deadline: "2026-07-10",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
 
   // ── My Claims demo tasks — 3 distinct statuses ────────────────────────────
@@ -431,14 +431,14 @@ const initialWishes: Wish[] = [
     title: "Implement a real-time Solana validator monitoring dashboard",
     description: "React dashboard showing live validator stats: uptime, skip rate, APY, and stake distribution. Uses Solana RPC and auto-refreshes every 30s.",
     category: "Development",
-    reward: 3.0,
+    bounty: 3.0,
     contributors: 8,
     walletAddress: "XaF7nPqT2oVrS5bGkLmNzYcEhJiDuKw1",
-    claimerAddress: DEMO_CLAIMER,
+    builder: DEMO_CLAIMER,
     timestamp: "3 days ago",
     deadline: "2026-06-01",
     isAnonymous: false,
-    status: "claimed",
+    status: "Accepted",
   },
   {
     // DEMO claimed — In Progress (near deadline, urgent)
@@ -446,14 +446,14 @@ const initialWishes: Wish[] = [
     title: "Design a dark-mode icon set for a DeFi protocol",
     description: "20 SVG icons for core DeFi concepts: swap, pool, stake, vault, governance, etc. Deliver in 24×24 and 48×48 sizes with a Figma source file.",
     category: "Design",
-    reward: 1.8,
+    bounty: 1.8,
     contributors: 5,
     walletAddress: "YbG8oQrU3pWsT6cHlMnOzZdFiKjEvLx2",
-    claimerAddress: DEMO_CLAIMER,
+    builder: DEMO_CLAIMER,
     timestamp: "6 days ago",
     deadline: "2026-05-13",
     isAnonymous: true,
-    status: "claimed",
+    status: "Accepted",
   },
   {
     // DEMO completed — Delivered & paid
@@ -461,14 +461,14 @@ const initialWishes: Wish[] = [
     title: "Record a 5-minute intro to Solana wallets video",
     description: "Short tutorial video covering wallet creation, funding, and first transaction on Solana. Deliverable: MP4 + captions + thumbnail.",
     category: "Writing",
-    reward: 1.2,
+    bounty: 1.2,
     contributors: 3,
     walletAddress: "ZcH9pRsV4qXtU7dImNoAaEgJlLfMwCy3",
-    claimerAddress: DEMO_CLAIMER,
+    builder: DEMO_CLAIMER,
     timestamp: "12 days ago",
     deadline: "2026-04-28",
     isAnonymous: false,
-    status: "completed",
+    status: "Settled",
   },
 
   // ── My Funded demo tasks — open / claimed / completed ────────────────────
@@ -478,13 +478,13 @@ const initialWishes: Wish[] = [
     title: "Write a comprehensive Anchor framework tutorial series",
     description: "A 4-part blog series covering Anchor setup, account modeling, CPIs, and testing. Each part ~1,500 words with working code examples.",
     category: "Writing",
-    reward: 4.5,
+    bounty: 4.5,
     contributors: 11,
     walletAddress: DEMO_REQUESTER,
     timestamp: "1 day ago",
     deadline: "2026-06-20",
     isAnonymous: false,
-    status: "open",
+    status: "Open",
   },
   {
     // DEMO requester — claimed, someone is working on it
@@ -492,14 +492,14 @@ const initialWishes: Wish[] = [
     title: "Build a Solana wallet connect component for React",
     description: "Reusable React component supporting Phantom, Backpack, and Solflare with auto-reconnect and network switching. TypeScript + full test coverage.",
     category: "Development",
-    reward: 2.8,
+    bounty: 2.8,
     contributors: 14,
     walletAddress: DEMO_REQUESTER,
-    claimerAddress: "AdB1cEfG2hIjK3lMnO4pQrS5tUvW6xYz",
+    builder: "AdB1cEfG2hIjK3lMnO4pQrS5tUvW6xYz",
     timestamp: "4 days ago",
     deadline: "2026-05-26",
     isAnonymous: false,
-    status: "claimed",
+    status: "Accepted",
   },
   {
     // DEMO requester — completed, successfully delivered
@@ -507,19 +507,19 @@ const initialWishes: Wish[] = [
     title: "Create a Solana ecosystem overview slide deck",
     description: "30-slide presentation covering Solana architecture, ecosystem projects, DeFi TVL, NFT volumes, and developer metrics. Suitable for investor pitches.",
     category: "Research",
-    reward: 1.6,
+    bounty: 1.6,
     contributors: 6,
     walletAddress: DEMO_REQUESTER,
-    claimerAddress: "BeC2dFgH3iJkL4mNpO5qRsT6uVwX7yZa",
+    builder: "BeC2dFgH3iJkL4mNpO5qRsT6uVwX7yZa",
     timestamp: "10 days ago",
     deadline: "2026-04-20",
     isAnonymous: false,
-    status: "completed",
+    status: "Settled",
   },
 ];
 
 type TabType = "implementer" | "requester" | "claims" | "funded";
-type SortType = "reward" | "time" | "contributors";
+type SortType = "bounty" | "time" | "contributors";
 
 export default function WishboxPage() {
   const [wishes, setWishes] = useState<Wish[]>(initialWishes);
@@ -527,7 +527,7 @@ export default function WishboxPage() {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isCreateSheetOpen, setIsCreateSheetOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>("implementer");
-  const [sortBy, setSortBy] = useState<SortType>("reward");
+  const [sortBy, setSortBy] = useState<SortType>("bounty");
   const [userRole, setUserRole] = useState<"implementer" | "requester">("implementer");
 
   // Real wallet connection
@@ -536,6 +536,13 @@ export default function WishboxPage() {
   const walletAddress = publicKey?.toBase58() || "";
 
   const handleWishClick = (wish: Wish) => {
+    setUserRole("implementer");
+    setSelectedWish(wish);
+    setIsDetailOpen(true);
+  };
+
+  const handleFundedWishClick = (wish: Wish) => {
+    setUserRole("requester");
     setSelectedWish(wish);
     setIsDetailOpen(true);
   };
@@ -544,7 +551,7 @@ export default function WishboxPage() {
     title: string;
     description: string;
     category: string;
-    reward: number;
+    bounty: number;
     isAnonymous: boolean;
     deadline: string;
   }) => {
@@ -553,8 +560,9 @@ export default function WishboxPage() {
       ...data,
       contributors: 1,
       walletAddress: walletAddress || "Anonymous",
+      creatorAddress: walletAddress || undefined,
       timestamp: "Just now",
-      status: "open",
+      status: "Open",
     };
     setWishes([newWish, ...wishes]);
   };
@@ -563,32 +571,26 @@ export default function WishboxPage() {
     setWishes(
       wishes.map((w) =>
         w.id === wishId
-          ? { ...w, reward: w.reward + amount, contributors: w.contributors + 1 }
+          ? { ...w, bounty: w.bounty + amount, contributors: w.contributors + 1 }
           : w
       )
     );
     setSelectedWish((prev) =>
       prev && prev.id === wishId
-        ? { ...prev, reward: prev.reward + amount, contributors: prev.contributors + 1 }
+        ? { ...prev, bounty: prev.bounty + amount, contributors: prev.contributors + 1 }
         : prev
     );
   };
 
   const handleClaim = (wishId: string) => {
+    const builderAddress = publicKey?.toBase58() || "anonymous";
     setWishes(wishes.map((w) =>
-      w.id === wishId ? { ...w, status: "claimed", claimerAddress: walletAddress } : w
+      w.id === wishId ? { ...w, status: "Accepted", builder: builderAddress } : w
     ));
     setSelectedWish((prev) =>
       prev && prev.id === wishId
-        ? { ...prev, status: "claimed", claimerAddress: walletAddress }
+        ? { ...prev, status: "Accepted", builder: builderAddress }
         : prev
-    );
-  };
-
-  const handleComplete = (wishId: string) => {
-    setWishes(wishes.map((w) => (w.id === wishId ? { ...w, status: "completed" } : w)));
-    setSelectedWish((prev) =>
-      prev && prev.id === wishId ? { ...prev, status: "completed" } : prev
     );
   };
 
@@ -599,8 +601,8 @@ export default function WishboxPage() {
   // Sort wishes based on selected criteria
   const sortedWishes = [...wishes].sort((a, b) => {
     switch (sortBy) {
-      case "reward":
-        return b.reward - a.reward;
+      case "bounty":
+        return b.bounty - a.bounty;
       case "contributors":
         return b.contributors - a.contributors;
       case "time":
@@ -613,10 +615,10 @@ export default function WishboxPage() {
   // Baseline = 6-month historical data minus live tasks, so totals land on
   // round targets: active≈200, activeBounty≈3800 SOL, claimed≈400, delivered≈310
   const BASE = { active: 176, bounty: 3768.5, claimed: 396, delivered: 308 };
-  const liveActive    = wishes.filter((w) => w.status === "open").length;
-  const liveBounty    = wishes.filter((w) => w.status === "open").reduce((s, w) => s + w.reward, 0);
-  const liveClaimed   = wishes.filter((w) => w.status === "claimed").length;
-  const liveDelivered = wishes.filter((w) => w.status === "completed").length;
+  const liveActive    = wishes.filter((w) => w.status === "Open").length;
+  const liveBounty    = wishes.filter((w) => w.status === "Open").reduce((s, w) => s + w.bounty, 0);
+  const liveClaimed   = wishes.filter((w) => w.status === "Accepted").length;
+  const liveDelivered = wishes.filter((w) => w.status === "Settled").length;
 
   const stats = {
     active:    BASE.active    + liveActive,
@@ -628,8 +630,9 @@ export default function WishboxPage() {
   // DEMO tasks always show regardless of wallet connection (for demo purposes).
   // Real-wallet tasks only appear when connected.
   const myClaimedTasks = wishes.filter(
-    (w) => w.claimerAddress === DEMO_CLAIMER || (connected && w.claimerAddress === walletAddress)
+    (w) => w.builder === DEMO_CLAIMER || (connected && w.builder === walletAddress)
   );
+  // Count in-progress as Accepted OR Submitted
 
   const myFundedTasks = wishes.filter(
     (w) => w.walletAddress === DEMO_REQUESTER || (connected && w.walletAddress === walletAddress)
@@ -647,11 +650,11 @@ export default function WishboxPage() {
       {/* Header */}
       <Header
         myClaimedCount={myClaimedTasks.length}
-        myClaimedInProgress={myClaimedTasks.filter((w) => w.status === "claimed").length}
-        myClaimedEarned={myClaimedTasks.filter((w) => w.status === "completed").reduce((s, w) => s + w.reward, 0)}
+        myClaimedInProgress={myClaimedTasks.filter((w) => w.status === "Accepted" || w.status === "Submitted").length}
+        myClaimedEarned={myClaimedTasks.filter((w) => w.status === "Settled").reduce((s, w) => s + w.bounty, 0)}
         myFundedCount={myFundedTasks.length}
-        myFundedActive={myFundedTasks.filter((w) => w.status === "open").length}
-        myFundedBounty={myFundedTasks.filter((w) => w.status === "open").reduce((s, w) => s + w.reward, 0)}
+        myFundedActive={myFundedTasks.filter((w) => w.status === "Open").length}
+        myFundedBounty={myFundedTasks.filter((w) => w.status === "Open").reduce((s, w) => s + w.bounty, 0)}
         onGoToClaims={() => { setUserRole("implementer"); setActiveTab("claims"); }}
         onGoToFunded={() => { setUserRole("requester"); setActiveTab("funded"); }}
       />
@@ -838,14 +841,13 @@ export default function WishboxPage() {
             isConnected={connected || myClaimedTasks.length > 0}
             onConnectWallet={handleConnectWallet}
             onWishClick={handleWishClick}
-            onComplete={handleComplete}
           />
         ) : activeTab === "funded" ? (
           <FundedTasksView
             wishes={myFundedTasks}
             isConnected={connected || myFundedTasks.length > 0}
             onConnectWallet={handleConnectWallet}
-            onWishClick={handleWishClick}
+            onWishClick={handleFundedWishClick}
             onPostClick={() => setIsCreateSheetOpen(true)}
           />
         ) : (
@@ -866,7 +868,6 @@ export default function WishboxPage() {
         onConnectWallet={handleConnectWallet}
         onContribute={handleContribute}
         onClaim={handleClaim}
-        onComplete={handleComplete}
         userRole={userRole}
       />
 
@@ -935,13 +936,11 @@ function ClaimedTasksView({
   isConnected,
   onConnectWallet,
   onWishClick,
-  onComplete,
 }: {
   wishes: Wish[];
   isConnected: boolean;
   onConnectWallet: () => void;
   onWishClick: (wish: Wish) => void;
-  onComplete: (wishId: string) => void;
 }) {
   const [submittingId, setSubmittingId] = useState<string | null>(null);
   const [submitUrl, setSubmitUrl] = useState("");
@@ -960,9 +959,9 @@ function ClaimedTasksView({
     );
   }
 
-  const inProgress = wishes.filter((w) => w.status === "claimed");
-  const completed   = wishes.filter((w) => w.status === "completed");
-  const totalEarned = completed.reduce((acc, w) => acc + w.reward, 0);
+  const inProgress = wishes.filter((w) => w.status === "Accepted" || w.status === "Submitted");
+  const completed   = wishes.filter((w) => w.status === "Settled");
+  const totalEarned = completed.reduce((acc, w) => acc + w.bounty, 0);
 
   return (
     <div className="space-y-6">
@@ -1003,10 +1002,12 @@ function ClaimedTasksView({
               <div className="flex items-start gap-4">
                 {/* Status indicator */}
                 <div className={`mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-full ${
-                  wish.status === "completed" ? "bg-green-500/20" : "bg-yellow-500/20"
+                  wish.status === "Settled" ? "bg-green-500/20" : wish.status === "Submitted" ? "bg-blue-500/20" : "bg-yellow-500/20"
                 }`}>
-                  {wish.status === "completed" ? (
+                  {wish.status === "Settled" ? (
                     <CheckCircle2 className="size-5 text-green-400" />
+                  ) : wish.status === "Submitted" ? (
+                    <Send className="size-5 text-blue-400" />
                   ) : (
                     <HandHeart className="size-5 text-yellow-400" />
                   )}
@@ -1019,11 +1020,13 @@ function ClaimedTasksView({
                       {wish.category}
                     </Badge>
                     <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                      wish.status === "completed"
+                      wish.status === "Settled"
                         ? "bg-green-500/20 text-green-400"
+                        : wish.status === "Submitted"
+                        ? "bg-blue-500/20 text-blue-400"
                         : "bg-yellow-500/20 text-yellow-400"
                     }`}>
-                      {wish.status === "completed" ? "Completed" : "In Progress"}
+                      {wish.status === "Settled" ? "Settled" : wish.status === "Submitted" ? "Submitted" : "In Progress"}
                     </span>
                   </div>
 
@@ -1034,7 +1037,7 @@ function ClaimedTasksView({
                   <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1 font-mono font-medium text-primary">
                       <Coins className="size-3.5" />
-                      {wish.reward} SOL
+                      {wish.bounty} SOL
                     </span>
                     <span className="flex items-center gap-1">
                       <Users className="size-3.5" />
@@ -1057,7 +1060,7 @@ function ClaimedTasksView({
                   >
                     View
                   </Button>
-                  {wish.status === "claimed" && submittingId !== wish.id && (
+                  {wish.status === "Accepted" && submittingId !== wish.id && (
                     <Button
                       size="sm"
                       onClick={() => { setSubmittingId(wish.id); setSubmitUrl(""); setSubmitNote(""); }}
@@ -1068,7 +1071,7 @@ function ClaimedTasksView({
                       Submit Work
                     </Button>
                   )}
-                  {wish.status === "completed" && (
+                  {wish.status === "Settled" && (
                     <div className="flex items-center gap-1 rounded-md bg-green-500/10 px-2 py-1 text-xs text-green-400">
                       <Lock className="size-3" />
                       Paid
@@ -1078,7 +1081,7 @@ function ClaimedTasksView({
               </div>
 
               {/* Inline submit form — expands below the card row */}
-              {wish.status === "claimed" && submittingId === wish.id && (
+              {wish.status === "Accepted" && submittingId === wish.id && (
               <div className="mt-4 space-y-3 rounded-xl border border-accent/30 bg-accent/5 p-4">
                 <div className="flex items-center justify-between">
                   <h4 className="flex items-center gap-2 text-sm font-semibold text-accent">
@@ -1126,7 +1129,7 @@ function ClaimedTasksView({
                     size="sm"
                     disabled={!submitUrl.trim() && !submitNote.trim()}
                     onClick={() => {
-                      onComplete(wish.id);
+                      onWishClick(wish); // Open detail dialog for Submit Delivery flow
                       setSubmittingId(null);
                       setSubmitUrl("");
                       setSubmitNote("");
@@ -1179,17 +1182,18 @@ function FundedTasksView({
     );
   }
 
-  const activeCount    = wishes.filter((w) => w.status === "open").length;
-  const claimedCount   = wishes.filter((w) => w.status === "claimed").length;
-  const completedCount = wishes.filter((w) => w.status === "completed").length;
-  const totalBounty    = wishes.reduce((s, w) => s + w.reward, 0);
+  const activeCount    = wishes.filter((w) => w.status === "Open").length;
+  const claimedCount   = wishes.filter((w) => w.status === "Accepted").length;
+  const completedCount = wishes.filter((w) => w.status === "Settled").length;
+  const totalBounty    = wishes.reduce((s, w) => s + w.bounty, 0);
 
   const statusStyle = (status: Wish["status"]) =>
-    status === "open"      ? "bg-green-500/20 text-green-400" :
-    status === "claimed"   ? "bg-yellow-500/20 text-yellow-400" :
+    status === "Open"      ? "bg-green-500/20 text-green-400" :
+    status === "Accepted"  ? "bg-yellow-500/20 text-yellow-400" :
+    status === "Submitted" ? "bg-blue-500/20 text-blue-400" :
                              "bg-primary/20 text-primary";
   const statusLabel = (status: Wish["status"]) =>
-    status === "open" ? "Open" : status === "claimed" ? "In Progress" : "Delivered";
+    status === "Open" ? "Open" : status === "Accepted" ? "In Progress" : status === "Submitted" ? "Submitted" : "Settled";
 
   return (
     <div className="space-y-6">
@@ -1246,11 +1250,13 @@ function FundedTasksView({
             >
               {/* Status indicator */}
               <div className={`mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-full ${
-                wish.status === "completed" ? "bg-primary/20" :
-                wish.status === "claimed"   ? "bg-yellow-500/20" : "bg-green-500/20"
+                wish.status === "Settled"   ? "bg-primary/20" :
+                wish.status === "Submitted" ? "bg-blue-500/20" :
+                wish.status === "Accepted"  ? "bg-yellow-500/20" : "bg-green-500/20"
               }`}>
-                {wish.status === "completed" ? <CheckCircle2 className="size-5 text-primary" /> :
-                 wish.status === "claimed"   ? <Users className="size-5 text-yellow-400" /> :
+                {wish.status === "Settled"   ? <CheckCircle2 className="size-5 text-primary" /> :
+                 wish.status === "Submitted" ? <Send className="size-5 text-blue-400" /> :
+                 wish.status === "Accepted"  ? <Users className="size-5 text-yellow-400" /> :
                                               <FileText className="size-5 text-green-400" />}
               </div>
 
@@ -1270,7 +1276,7 @@ function FundedTasksView({
                 <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                   <span className="flex items-center gap-1 font-mono font-medium text-primary">
                     <Coins className="size-3.5" />
-                    {wish.reward} SOL
+                    {wish.bounty} SOL
                   </span>
                   <span className="flex items-center gap-1">
                     <Users className="size-3.5" />
@@ -1284,10 +1290,10 @@ function FundedTasksView({
               </div>
 
               {/* Delivery badge */}
-              {wish.status === "completed" && (
+              {wish.status === "Settled" && (
                 <div className="flex shrink-0 items-center gap-1 rounded-md bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
                   <CheckCircle2 className="size-3" />
-                  Delivered
+                  Settled
                 </div>
               )}
             </div>
@@ -1362,7 +1368,7 @@ function RequesterView({
                   <div className="mt-1 flex items-center gap-4 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <Coins className="size-3 text-primary" />
-                      {task.reward} SOL
+                      {task.bounty} SOL
                     </span>
                     <span className="flex items-center gap-1">
                       <Users className="size-3" />
@@ -1370,14 +1376,16 @@ function RequesterView({
                     </span>
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs ${
-                        task.status === "open"
+                        task.status === "Open"
                           ? "bg-green-500/20 text-green-400"
-                          : task.status === "claimed"
+                          : task.status === "Accepted"
                             ? "bg-yellow-500/20 text-yellow-400"
-                            : "bg-primary/20 text-primary"
+                            : task.status === "Submitted"
+                              ? "bg-blue-500/20 text-blue-400"
+                              : "bg-primary/20 text-primary"
                       }`}
                     >
-                      {task.status.charAt(0).toUpperCase() + task.status.slice(1)}
+                      {task.status}
                     </span>
                   </div>
                 </div>
@@ -1396,13 +1404,13 @@ function RequesterView({
         </div>
         <div className="rounded-xl border border-glass-border bg-glass-bg/50 p-4 text-center backdrop-blur-md">
           <p className="text-2xl font-bold text-foreground">
-            {myTasks.reduce((acc, w) => acc + w.reward, 0).toFixed(1)}
+            {myTasks.reduce((acc, w) => acc + w.bounty, 0).toFixed(1)}
           </p>
           <p className="text-sm text-muted-foreground">SOL Funded</p>
         </div>
         <div className="rounded-xl border border-glass-border bg-glass-bg/50 p-4 text-center backdrop-blur-md">
           <p className="text-2xl font-bold text-accent">
-            {myTasks.filter((w) => w.status === "completed").length}
+            {myTasks.filter((w) => w.status === "Settled").length}
           </p>
           <p className="text-sm text-muted-foreground">Completed</p>
         </div>

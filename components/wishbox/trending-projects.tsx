@@ -21,17 +21,17 @@ function daysLeft(deadline: string): number {
 function computeTop3(wishes: Wish[]) {
   if (wishes.length === 0) return [];
 
-  const openWishes = wishes.filter((w) => w.status === "open");
+  const openWishes = wishes.filter((w) => w.status === "Open");
   const pool = openWishes.length > 0 ? openWishes : wishes;
 
-  const maxReward  = Math.max(...pool.map((w) => w.reward));
+  const maxReward  = Math.max(...pool.map((w) => w.bounty));
   const maxContrib = Math.max(...pool.map((w) => w.contributors));
   const allDays    = pool.map((w) => daysLeft(w.deadline));
   const maxDays    = Math.max(...allDays);
 
   return pool
     .map((w) => {
-      const nReward   = normalize(w.reward, maxReward);
+      const nReward   = normalize(w.bounty, maxReward);
       const nContrib  = normalize(w.contributors, maxContrib);
       // Tasks expiring sooner → higher urgency score
       const days      = daysLeft(w.deadline);
@@ -135,7 +135,7 @@ export function TrendingProjects({ wishes, onWishClick }: TrendingProjectsProps)
               <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
                 <span className="flex items-center gap-0.5">
                   <Coins className="size-2.5 text-primary" />
-                  <span className="font-mono font-medium text-primary">{wish.reward} SOL</span>
+                  <span className="font-mono font-medium text-primary">{wish.bounty} SOL</span>
                 </span>
                 <span className="flex items-center gap-0.5">
                   <Users className="size-2.5" />
