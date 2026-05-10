@@ -134,7 +134,7 @@ const initialWishes: Wish[] = [
     description: "Need grammar and logic proofreading for a DAO governance proposal to ensure clear and professional expression.",
     category: "Writing",
     reward: 0.5,
-    contributors: 0,
+    contributors: 1,
     walletAddress: "1pAsDfGhJkLzXcVbNm4qWeRtYuIoPaS",
     timestamp: "10 hours ago",
     deadline: "2026-05-17",
@@ -551,7 +551,7 @@ export default function WishboxPage() {
     const newWish: Wish = {
       id: Date.now().toString(),
       ...data,
-      contributors: 0,
+      contributors: 1,
       walletAddress: walletAddress || "Anonymous",
       timestamp: "Just now",
       status: "open",

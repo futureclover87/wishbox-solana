@@ -1,7 +1,7 @@
 "use client";
 
 import { WishCard, type Wish } from "./wish-card";
-import { Search, Coins, Clock, Sparkles } from "lucide-react";
+import { Search, Coins, Clock, Sparkles, Zap } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
@@ -17,13 +17,15 @@ const categoryFilters = ["All", "Development", "Design", "Translation", "Writing
 export function RecentWishes({ wishes, onWishClick, sortBy = "reward", onSortChange }: RecentWishesProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [activeOnly, setActiveOnly] = useState(false);
 
   const filteredWishes = wishes.filter((wish) => {
     const matchesSearch =
       wish.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       wish.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = activeCategory === "All" || wish.category === activeCategory;
-    return matchesSearch && matchesCategory;
+    const matchesActive = !activeOnly || wish.status === "open";
+    return matchesSearch && matchesCategory && matchesActive;
   });
 
   return (
@@ -60,8 +62,23 @@ export function RecentWishes({ wishes, onWishClick, sortBy = "reward", onSortCha
             ))}
           </div>
 
-          {/* Sort Controls */}
-          <div className="flex items-center gap-2">
+          {/* Filter + Sort Controls */}
+          <div className="flex items-center gap-3">
+            {/* Active filter — prepended, independent toggle */}
+            <button
+              onClick={() => setActiveOnly((v) => !v)}
+              className={`flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm transition-all ${
+                activeOnly
+                  ? "border-green-500/60 bg-green-500/15 text-green-400"
+                  : "border-glass-border bg-secondary/30 text-muted-foreground hover:border-green-500/40 hover:text-green-400"
+              }`}
+            >
+              <Zap className="size-3.5" />
+              Active
+            </button>
+
+            <span className="h-4 w-px bg-glass-border" />
+
             <span className="text-sm text-muted-foreground">Sort:</span>
             <div className="flex gap-1">
               <button
