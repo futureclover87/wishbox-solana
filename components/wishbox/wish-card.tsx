@@ -23,6 +23,14 @@ export interface Wish {
   deadline: string;
   isAnonymous: boolean;
   status: WishStatus;
+  /** ISO timestamp when AI approved the delivery */
+  submittedAt?: string;
+  /** ISO timestamp 7 days after submittedAt — auto-settle date */
+  paymentDue?: string;
+  /** Builder's delivery link (GitHub PR, Figma, etc.) */
+  deliveryUrl?: string;
+  /** Builder's delivery summary note */
+  deliveryNote?: string;
 }
 
 type CountdownLevel = "normal" | "warning" | "critical" | "expired";

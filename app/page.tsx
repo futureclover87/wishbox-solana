@@ -7,7 +7,7 @@ import { WishDetailDialog } from "@/components/wishbox/wish-detail-dialog";
 import { CreateWishSheet } from "@/components/wishbox/create-wish-sheet";
 import { TrendingProjects } from "@/components/wishbox/trending-projects";
 import type { Wish } from "@/components/wishbox/wish-card";
-import { Plus, Search, Coins, Users, Clock, FileText, HandHeart, Wallet, CheckCircle2, Lock, Send, X } from "lucide-react";
+import { Plus, Search, Coins, Users, Clock, FileText, HandHeart, Wallet, CheckCircle2, Lock, Send, X, AlertCircle, BrainCircuit, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -152,12 +152,16 @@ const initialWishes: Wish[] = [
     category: "Development",
     bounty: 3.2,
     contributors: 11,
-    walletAddress: "XaF7nPqT2oVrS5bGkLmNzYcEhJiDuKw1",
+    walletAddress: DEMO_REQUESTER,
     builder: DEMO_CLAIMER,
     timestamp: "8 hours ago",
     deadline: "2026-06-10",
     isAnonymous: false,
-    status: "Accepted",
+    status: "Submitted",
+    submittedAt: "2026-05-08T10:24:00.000Z",
+    paymentDue: "2026-05-15T10:24:00.000Z",
+    deliveryUrl: "https://github.com/demo-builder/validator-dashboard/pull/42",
+    deliveryNote: "Implemented full validator stats dashboard with React Query for data fetching from mainnet RPC. Displays top-100 validators sorted by stake weight, with live 30s auto-refresh. Deployed to Vercel at validator-dash.vercel.app. All acceptance criteria met: uptime %, skip rate, APY, vote credits all displayed. PR merged into main branch.",
   },
 
   // ── SECURITY ──────────────────────────────────────────────────────────────
@@ -556,6 +560,21 @@ export default function WishboxPage() {
     );
   };
 
+  const handleSubmitDelivery = (wishId: string, url: string, note: string) => {
+    const now = new Date();
+    const paymentDue = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString();
+    setWishes(wishes.map((w) =>
+      w.id === wishId
+        ? { ...w, status: "Submitted", submittedAt: now.toISOString(), paymentDue, deliveryUrl: url, deliveryNote: note }
+        : w
+    ));
+    setSelectedWish((prev) =>
+      prev && prev.id === wishId
+        ? { ...prev, status: "Submitted", submittedAt: now.toISOString(), paymentDue, deliveryUrl: url, deliveryNote: note }
+        : prev
+    );
+  };
+
   const handleClaim = (wishId: string) => {
     const builderAddress = publicKey?.toBase58() || "anonymous";
     setWishes(wishes.map((w) =>
@@ -826,6 +845,7 @@ export default function WishboxPage() {
             isConnected={connected || myClaimedTasks.length > 0}
             onConnectWallet={handleConnectWallet}
             onWishClick={handleWishClick}
+            onSubmitDelivery={handleSubmitDelivery}
           />
         ) : activeTab === "funded" ? (
           <FundedTasksView
@@ -916,20 +936,60 @@ function StatCell({
 }
 
 // ─── My Claims View ────────────────────────────────────────────────────────────
+type VerifyPhase = "idle" | "verifying" | "approved" | "revision";
+interface VerifyResult { status: "APPROVED" | "REVISION_NEEDED"; score: number; feedback: string; checklist: { item: string; passed: boolean }[]; }
+
 function ClaimedTasksView({
   wishes,
   isConnected,
   onConnectWallet,
   onWishClick,
+  onSubmitDelivery,
 }: {
   wishes: Wish[];
   isConnected: boolean;
   onConnectWallet: () => void;
   onWishClick: (wish: Wish) => void;
+  onSubmitDelivery: (wishId: string, url: string, note: string) => void;
 }) {
   const [submittingId, setSubmittingId] = useState<string | null>(null);
   const [submitUrl, setSubmitUrl] = useState("");
   const [submitNote, setSubmitNote] = useState("");
+  const [verifyPhase, setVerifyPhase] = useState<VerifyPhase>("idle");
+  const [verifyResult, setVerifyResult] = useState<VerifyResult | null>(null);
+
+  const resetSubmit = () => {
+    setSubmittingId(null);
+    setSubmitUrl("");
+    setSubmitNote("");
+    setVerifyPhase("idle");
+    setVerifyResult(null);
+  };
+
+  const handleVerify = async (wish: Wish) => {
+    if (!submitUrl.trim() && !submitNote.trim()) return;
+    setVerifyPhase("verifying");
+    setVerifyResult(null);
+    try {
+      const res = await fetch("/api/verify-delivery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: submitUrl, note: submitNote, taskTitle: wish.title }),
+      });
+      const data: VerifyResult = await res.json();
+      setVerifyResult(data);
+      setVerifyPhase(data.status === "APPROVED" ? "approved" : "revision");
+    } catch {
+      setVerifyPhase("revision");
+      setVerifyResult({ status: "REVISION_NEEDED", score: 0, feedback: "Verification service unavailable. Please try again.", checklist: [] });
+    }
+  };
+
+  const handleConfirmSubmit = (wishId: string) => {
+    onSubmitDelivery(wishId, submitUrl, submitNote);
+    resetSubmit();
+  };
+
   if (!isConnected) {
     return (
       <div className="rounded-xl border border-primary/30 bg-primary/5 p-16 text-center backdrop-blur-md">
@@ -937,20 +997,18 @@ function ClaimedTasksView({
         <h3 className="mb-2 text-lg font-semibold text-foreground">Connect Your Wallet</h3>
         <p className="mb-6 text-sm text-muted-foreground">Connect your wallet to see tasks you&apos;ve claimed</p>
         <Button onClick={onConnectWallet} className="bg-primary text-primary-foreground hover:bg-primary/90">
-          <Wallet className="mr-2 size-4" />
-          Connect Wallet
+          <Wallet className="mr-2 size-4" />Connect Wallet
         </Button>
       </div>
     );
   }
 
   const inProgress = wishes.filter((w) => w.status === "Accepted" || w.status === "Submitted");
-  const completed   = wishes.filter((w) => w.status === "Settled");
+  const completed  = wishes.filter((w) => w.status === "Settled");
   const totalEarned = completed.reduce((acc, w) => acc + w.bounty, 0);
 
   return (
     <div className="space-y-6">
-      {/* Stats bar */}
       <div className="grid grid-cols-3 gap-4">
         <div className="rounded-xl border border-glass-border bg-glass-bg/50 p-4 text-center backdrop-blur-md">
           <p className="text-2xl font-bold text-accent">{wishes.length}</p>
@@ -970,167 +1028,173 @@ function ClaimedTasksView({
         <div className="rounded-xl border border-glass-border bg-glass-bg/50 p-16 text-center backdrop-blur-md">
           <HandHeart className="mx-auto mb-4 size-12 text-muted-foreground" />
           <h3 className="mb-2 text-lg font-semibold text-foreground">No Claimed Tasks Yet</h3>
-          <p className="text-sm text-muted-foreground">
-            Browse available tasks and claim one to start earning SOL
-          </p>
+          <p className="text-sm text-muted-foreground">Browse available tasks and claim one to start earning SOL</p>
         </div>
       ) : (
         <div className="space-y-3">
           <h3 className="flex items-center gap-2 text-base font-semibold text-foreground">
-            <HandHeart className="size-5 text-accent" />
-            My Work
+            <HandHeart className="size-5 text-accent" />My Work
           </h3>
-
           {wishes.map((wish) => (
             <div key={wish.id} className="group rounded-xl border border-glass-border bg-glass-bg/50 p-5 backdrop-blur-md transition-all hover:border-accent/40">
-              {/* Card row */}
               <div className="flex items-start gap-4">
-                {/* Status indicator */}
                 <div className={`mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-full ${
                   wish.status === "Settled" ? "bg-green-500/20" : wish.status === "Submitted" ? "bg-blue-500/20" : "bg-yellow-500/20"
                 }`}>
-                  {wish.status === "Settled" ? (
-                    <CheckCircle2 className="size-5 text-green-400" />
-                  ) : wish.status === "Submitted" ? (
-                    <Send className="size-5 text-blue-400" />
-                  ) : (
-                    <HandHeart className="size-5 text-yellow-400" />
-                  )}
+                  {wish.status === "Settled" ? <CheckCircle2 className="size-5 text-green-400" /> :
+                   wish.status === "Submitted" ? <Send className="size-5 text-blue-400" /> :
+                   <HandHeart className="size-5 text-yellow-400" />}
                 </div>
-
-                {/* Task info */}
                 <div className="min-w-0 flex-1">
                   <div className="mb-1 flex flex-wrap items-center gap-2">
-                    <Badge variant="outline" className="border-accent/30 bg-accent/10 text-accent text-xs">
-                      {wish.category}
-                    </Badge>
+                    <Badge variant="outline" className="border-accent/30 bg-accent/10 text-accent text-xs">{wish.category}</Badge>
                     <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                      wish.status === "Settled"
-                        ? "bg-green-500/20 text-green-400"
-                        : wish.status === "Submitted"
-                        ? "bg-blue-500/20 text-blue-400"
-                        : "bg-yellow-500/20 text-yellow-400"
+                      wish.status === "Settled" ? "bg-green-500/20 text-green-400" :
+                      wish.status === "Submitted" ? "bg-blue-500/20 text-blue-400" : "bg-yellow-500/20 text-yellow-400"
                     }`}>
-                      {wish.status === "Settled" ? "Settled" : wish.status === "Submitted" ? "Submitted" : "In Progress"}
+                      {wish.status === "Settled" ? "Settled" : wish.status === "Submitted" ? "Under Review" : "In Progress"}
                     </span>
+                    {wish.status === "Submitted" && wish.paymentDue && (
+                      <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary">
+                        Payment: {new Date(wish.paymentDue).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                      </span>
+                    )}
                   </div>
-
-                  <h4 className="mb-2 font-semibold text-foreground group-hover:text-accent transition-colors line-clamp-1">
-                    {wish.title}
-                  </h4>
-
+                  <h4 className="mb-2 font-semibold text-foreground group-hover:text-accent transition-colors line-clamp-1">{wish.title}</h4>
                   <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1 font-mono font-medium text-primary">
-                      <Coins className="size-3.5" />
-                      {wish.bounty} SOL
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Users className="size-3.5" />
-                      {wish.contributors} contributors
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="size-3.5" />
-                      {wish.timestamp}
-                    </span>
+                    <span className="flex items-center gap-1 font-mono font-medium text-primary"><Coins className="size-3.5" />{wish.bounty} SOL</span>
+                    <span className="flex items-center gap-1"><Users className="size-3.5" />{wish.contributors} contributors</span>
+                    <span className="flex items-center gap-1"><Clock className="size-3.5" />{wish.timestamp}</span>
                   </div>
                 </div>
-
-                {/* Actions */}
                 <div className="flex shrink-0 flex-col gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onWishClick(wish)}
-                    className="border-glass-border bg-secondary/30 text-muted-foreground hover:border-accent/50 hover:text-accent"
-                  >
-                    View
-                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => onWishClick(wish)}
+                    className="border-glass-border bg-secondary/30 text-muted-foreground hover:border-accent/50 hover:text-accent">View</Button>
                   {wish.status === "Accepted" && submittingId !== wish.id && (
-                    <Button
-                      size="sm"
-                      onClick={() => { setSubmittingId(wish.id); setSubmitUrl(""); setSubmitNote(""); }}
+                    <Button size="sm"
+                      onClick={() => { setSubmittingId(wish.id); setSubmitUrl(""); setSubmitNote(""); setVerifyPhase("idle"); setVerifyResult(null); }}
                       className="bg-accent text-accent-foreground hover:bg-accent/90 whitespace-nowrap"
-                      style={{ boxShadow: "0 0 12px var(--glow-accent)" }}
-                    >
-                      <Send className="mr-1.5 size-3.5" />
-                      Submit Work
+                      style={{ boxShadow: "0 0 12px var(--glow-accent)" }}>
+                      <Send className="mr-1.5 size-3.5" />Submit Work
                     </Button>
                   )}
                   {wish.status === "Settled" && (
                     <div className="flex items-center gap-1 rounded-md bg-green-500/10 px-2 py-1 text-xs text-green-400">
-                      <Lock className="size-3" />
-                      Paid
+                      <Lock className="size-3" />Paid
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Inline submit form — expands below the card row */}
+              {/* ── AI-verified submit panel ── */}
               {wish.status === "Accepted" && submittingId === wish.id && (
-              <div className="mt-4 space-y-3 rounded-xl border border-accent/30 bg-accent/5 p-4">
-                <div className="flex items-center justify-between">
-                  <h4 className="flex items-center gap-2 text-sm font-semibold text-accent">
-                    <Send className="size-4" />
-                    Submit Your Work
-                  </h4>
-                  <button
-                    onClick={() => setSubmittingId(null)}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <X className="size-4" />
-                  </button>
-                </div>
+                <div className="mt-4 rounded-xl border border-accent/30 bg-accent/5 p-4 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="flex items-center gap-2 text-sm font-semibold text-accent">
+                      <Send className="size-4" />Submit Your Work
+                    </h4>
+                    <button onClick={resetSubmit} className="text-muted-foreground hover:text-foreground transition-colors">
+                      <X className="size-4" />
+                    </button>
+                  </div>
 
-                <div className="space-y-1">
-                  <label className="text-xs font-medium text-foreground">Submission Link</label>
-                  <Input
-                    placeholder="https://github.com/your-repo / Google Drive / etc."
-                    value={submitUrl}
-                    onChange={(e) => setSubmitUrl(e.target.value)}
-                    className="border-glass-border bg-secondary/50 text-sm"
-                  />
-                </div>
+                  {/* Input fields (always visible unless verifying/approved) */}
+                  {verifyPhase !== "approved" && (
+                    <>
+                      <div className="space-y-1">
+                        <label className="text-xs font-medium text-foreground">Submission Link</label>
+                        <Input placeholder="https://github.com/your-repo · Figma · Drive · Mirror…"
+                          value={submitUrl} onChange={(e) => setSubmitUrl(e.target.value)}
+                          className="border-glass-border bg-secondary/50 text-sm" disabled={verifyPhase === "verifying"} />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-xs font-medium text-foreground">Work Summary <span className="text-muted-foreground">(≥ 30 words recommended)</span></label>
+                        <Textarea placeholder="Describe what you completed, how it meets the acceptance criteria, and any notes for the requester…"
+                          value={submitNote} onChange={(e) => setSubmitNote(e.target.value)}
+                          className="min-h-[90px] resize-none border-glass-border bg-secondary/50 text-sm"
+                          disabled={verifyPhase === "verifying"} />
+                        <p className="text-[10px] text-muted-foreground">{submitNote.trim().split(/\s+/).filter(Boolean).length} words</p>
+                      </div>
+                    </>
+                  )}
 
-                <div className="space-y-1">
-                  <label className="text-xs font-medium text-foreground">Work Summary</label>
-                  <Textarea
-                    placeholder="Briefly describe what you completed and any notes for the task creator..."
-                    value={submitNote}
-                    onChange={(e) => setSubmitNote(e.target.value)}
-                    className="min-h-[80px] resize-none border-glass-border bg-secondary/50 text-sm"
-                  />
-                </div>
+                  {/* Verifying state */}
+                  {verifyPhase === "verifying" && (
+                    <div className="flex flex-col items-center gap-3 py-6 text-center">
+                      <div className="relative flex size-14 items-center justify-center">
+                        <div className="absolute inset-0 animate-ping rounded-full bg-primary/20" />
+                        <div className="relative flex size-10 items-center justify-center rounded-full bg-primary/10">
+                          <Loader2 className="size-5 animate-spin text-primary" />
+                        </div>
+                      </div>
+                      <p className="font-semibold text-foreground">AI is reviewing your submission…</p>
+                      <p className="text-xs text-muted-foreground">Checking link validity, completeness, and acceptance criteria</p>
+                    </div>
+                  )}
 
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setSubmittingId(null)}
-                    className="border-glass-border bg-secondary/30 text-muted-foreground"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    size="sm"
-                    disabled={!submitUrl.trim() && !submitNote.trim()}
-                    onClick={() => {
-                      onWishClick(wish); // Open detail dialog for Submit Delivery flow
-                      setSubmittingId(null);
-                      setSubmitUrl("");
-                      setSubmitNote("");
-                    }}
-                    className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90"
-                    style={{ boxShadow: "0 0 15px var(--glow-accent)" }}
-                  >
-                    <Send className="mr-2 size-4" />
-                    Submit &amp; Mark as Complete
-                  </Button>
+                  {/* Revision needed */}
+                  {verifyPhase === "revision" && verifyResult && (
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3">
+                        <AlertCircle className="size-4 shrink-0 text-amber-400" />
+                        <p className="text-sm font-semibold text-amber-400">Revision Required — Score {verifyResult.score}/100</p>
+                      </div>
+                      {verifyResult.checklist.length > 0 && (
+                        <div className="rounded-lg border border-glass-border bg-secondary/20 p-3 space-y-1.5">
+                          {verifyResult.checklist.map((c, i) => (
+                            <div key={i} className="flex items-center gap-2 text-xs">
+                              {c.passed
+                                ? <CheckCircle2 className="size-3.5 shrink-0 text-green-400" />
+                                : <X className="size-3.5 shrink-0 text-red-400" />}
+                              <span className={c.passed ? "text-muted-foreground" : "text-foreground"}>{c.item}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      <p className="text-xs text-muted-foreground whitespace-pre-line">{verifyResult.feedback}</p>
+                      <p className="text-xs text-muted-foreground">Please update your submission above and verify again.</p>
+                    </div>
+                  )}
+
+                  {/* Approved */}
+                  {verifyPhase === "approved" && verifyResult && (
+                    <div className="space-y-3">
+                      <div className="flex flex-col items-center gap-2 rounded-lg border border-green-500/40 bg-green-500/10 p-4 text-center">
+                        <CheckCircle2 className="size-8 text-green-400" />
+                        <p className="font-semibold text-green-400">AI Verified — Score {verifyResult.score}/100</p>
+                        <p className="text-xs text-muted-foreground">{verifyResult.feedback}</p>
+                      </div>
+                      <div className="rounded-lg border border-primary/20 bg-primary/5 px-4 py-3 text-sm">
+                        <p className="font-medium text-foreground">Payment schedule</p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          <span className="font-mono text-primary">{wish.bounty} SOL</span> will be released automatically <span className="font-medium text-foreground">7 days</span> after submission, unless the requester raises a dispute.
+                        </p>
+                      </div>
+                      <Button onClick={() => handleConfirmSubmit(wish.id)}
+                        className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                        style={{ boxShadow: "0 0 20px var(--glow-primary)" }}>
+                        <CheckCircle2 className="mr-2 size-4" />Confirm Submission &amp; Start 7-Day Window
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* Submit / Re-verify button */}
+                  {(verifyPhase === "idle" || verifyPhase === "revision") && (
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" onClick={resetSubmit}
+                        className="border-glass-border bg-secondary/30 text-muted-foreground">Cancel</Button>
+                      <Button size="sm"
+                        disabled={!submitUrl.trim() && !submitNote.trim()}
+                        onClick={() => handleVerify(wish)}
+                        className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90"
+                        style={{ boxShadow: "0 0 15px var(--glow-accent)" }}>
+                        <BrainCircuit className="mr-2 size-4" />
+                        {verifyPhase === "revision" ? "Re-verify Submission" : "AI Verify & Submit"}
+                      </Button>
+                    </div>
+                  )}
                 </div>
-                <p className="text-[10px] text-muted-foreground">
-                  Submitting will mark the task as complete and notify the task creator for review.
-                </p>
-              </div>
-            )}
+              )}
             </div>
           ))}
         </div>

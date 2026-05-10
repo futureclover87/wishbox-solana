@@ -162,26 +162,33 @@ export function WishDetailDialog({
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) resetStates(); onOpenChange(v); }}>
-      <DialogContent className="border-glass-border bg-background/95 backdrop-blur-xl sm:max-w-xl">
+      <DialogContent className="flex max-h-[90vh] flex-col border-glass-border bg-background/95 p-0 backdrop-blur-xl sm:max-w-xl">
 
-        {/* ── Header ── */}
-        <DialogHeader>
-          <div className="mb-2 flex items-center gap-2">
-            <Badge variant="outline" className="border-accent/30 bg-accent/10 text-accent">
-              {wish.category}
-            </Badge>
-            <Badge className={`${STATUS_COLORS[wish.status]} border`}>
-              {wish.status}
-            </Badge>
+        {/* ── Fixed Header (never scrolls) ── */}
+        <div className="shrink-0 border-b border-glass-border px-6 pt-6 pb-4">
+          <DialogHeader>
+            <div className="mb-2 flex items-center gap-2">
+              <Badge variant="outline" className="border-accent/30 bg-accent/10 text-accent">
+                {wish.category}
+              </Badge>
+              <Badge className={`${STATUS_COLORS[wish.status]} border`}>
+                {wish.status}
+              </Badge>
+            </div>
+            <DialogTitle className="text-xl text-foreground">{wish.title}</DialogTitle>
+            <DialogDescription className="text-muted-foreground leading-relaxed">
+              {wish.description}
+            </DialogDescription>
+          </DialogHeader>
+
+          {/* ── Chain Progress (in fixed header) ── */}
+          <div className="mt-4">
+            <ChainProgress status={wish.status} />
           </div>
-          <DialogTitle className="text-xl text-foreground">{wish.title}</DialogTitle>
-          <DialogDescription className="text-muted-foreground leading-relaxed">
-            {wish.description}
-          </DialogDescription>
-        </DialogHeader>
+        </div>
 
-        {/* ── Chain Progress ── */}
-        <ChainProgress status={wish.status} />
+        {/* ── Scrollable body ── */}
+        <div className="min-h-0 flex-1 overflow-y-auto px-6 py-4 space-y-4">
 
         {/* ── Stats ── */}
         <div className="grid grid-cols-3 gap-3">
@@ -468,15 +475,101 @@ export function WishDetailDialog({
           )}
 
           {/* ── Submitted ── */}
-          {isWalletConnected && wish.status === "Submitted" && (
-            <div className="rounded-xl border border-blue-500/30 bg-blue-500/10 p-6 text-center">
-              <Sparkles className="mx-auto mb-3 size-12 text-blue-400" />
-              <h3 className="mb-2 text-xl font-bold text-blue-400">Delivery Submitted</h3>
-              <p className="text-muted-foreground">
-                The builder has submitted their work. Awaiting creator review and settlement.
-              </p>
-            </div>
-          )}
+          {isWalletConnected && wish.status === "Submitted" && (() => {
+            const now = Date.now();
+            const paymentDueMs = wish.paymentDue ? new Date(wish.paymentDue).getTime() : now + 7 * 86400000;
+            const daysLeft = Math.max(0, Math.ceil((paymentDueMs - now) / 86400000));
+            const disputeOpen = daysLeft > 0;
+            const isCreator = !!publicKey && wish.walletAddress && publicKey.toBase58() === wish.walletAddress;
+
+            return (
+              <div className="space-y-3">
+                {/* AI verified badge */}
+                <div className="flex items-center gap-3 rounded-xl border border-green-500/30 bg-green-500/5 px-4 py-3">
+                  <CheckCircle2 className="size-5 shrink-0 text-green-400" />
+                  <div>
+                    <p className="text-sm font-semibold text-green-400">AI Verified &amp; Submitted</p>
+                    <p className="text-xs text-muted-foreground">Delivery passed automated screening — awaiting dispute window</p>
+                  </div>
+                </div>
+
+                {/* Delivery link */}
+                {wish.deliveryUrl && (
+                  <div className="rounded-lg border border-glass-border bg-secondary/20 px-4 py-2.5 flex items-center gap-2">
+                    <ArrowRight className="size-3.5 shrink-0 text-primary" />
+                    <a href={wish.deliveryUrl} target="_blank" rel="noopener noreferrer"
+                      className="text-sm text-primary underline underline-offset-2 truncate hover:opacity-80">
+                      {wish.deliveryUrl}
+                    </a>
+                  </div>
+                )}
+                {wish.deliveryNote && (
+                  <div className="rounded-lg border border-glass-border bg-secondary/20 px-4 py-3">
+                    <p className="mb-1 text-xs font-medium text-muted-foreground">Builder&apos;s Summary</p>
+                    <p className="text-sm text-foreground leading-relaxed">{wish.deliveryNote}</p>
+                  </div>
+                )}
+
+                {/* Payment countdown */}
+                <div className={`rounded-xl border p-4 ${
+                  disputeOpen ? "border-primary/30 bg-primary/5" : "border-green-500/30 bg-green-500/5"
+                }`}>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">
+                        {disputeOpen ? `Auto-payment in ${daysLeft} day${daysLeft !== 1 ? "s" : ""}` : "Payment releasing…"}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {wish.bounty} SOL will be released to the builder on{" "}
+                        {new Date(paymentDueMs).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                        {disputeOpen ? " unless disputed." : "."}
+                      </p>
+                    </div>
+                    <div className={`flex size-12 items-center justify-center rounded-full font-bold text-lg ${
+                      disputeOpen ? "bg-primary/20 text-primary" : "bg-green-500/20 text-green-400"
+                    }`}>
+                      {daysLeft}d
+                    </div>
+                  </div>
+                </div>
+
+                {/* Dispute button — open to all wallet-connected users within the window */}
+                {isWalletConnected && disputeOpen && (
+                  <button
+                    onClick={() => setTxError("Dispute submitted — your case will be reviewed by the platform within 48h. Payment is paused until resolved.")}
+                    className="w-full rounded-xl border-2 border-amber-500/40 bg-amber-500/5 px-4 py-3 text-left transition-all hover:border-amber-500/70 hover:bg-amber-500/10 active:scale-[0.99]"
+                  >
+                    <div className="flex items-center gap-3">
+                      <AlertCircle className="size-5 shrink-0 text-amber-400" />
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-amber-400">Raise a Dispute</p>
+                        <p className="text-xs text-muted-foreground">
+                          {isCreator
+                            ? `As task requester, dispute if delivery doesn't meet requirements — ${daysLeft}d remaining`
+                            : `As a contributor, flag concerns about this delivery — ${daysLeft}d remaining`}
+                        </p>
+                      </div>
+                      <span className="shrink-0 rounded-full bg-amber-500/20 px-2 py-0.5 text-xs font-bold text-amber-400">
+                        {daysLeft}d
+                      </span>
+                    </div>
+                  </button>
+                )}
+                {isWalletConnected && !disputeOpen && (
+                  <div className="rounded-xl border border-glass-border bg-secondary/20 px-4 py-3 text-sm text-muted-foreground text-center">
+                    Dispute window closed — payment will be released automatically.
+                  </div>
+                )}
+                {!isWalletConnected && disputeOpen && (
+                  <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-center">
+                    <p className="text-xs text-muted-foreground">
+                      <span className="font-medium text-amber-400">Connect wallet</span> to raise a dispute within the {daysLeft}-day window
+                    </p>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
 
           {/* ── Settled ── */}
           {isWalletConnected && wish.status === "Settled" && (
@@ -492,7 +585,10 @@ export function WishDetailDialog({
               </div>
             </div>
           )}
-        </div>
+
+        </div>{/* end actions wrapper */}
+
+        </div>{/* end scrollable body */}
       </DialogContent>
     </Dialog>
   );
