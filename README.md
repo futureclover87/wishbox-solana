@@ -3,59 +3,58 @@ AI-Driven & Privacy-Preserving Task Verification Protocol on Solana
 
 Transforming vague human desires into quantifiable, verifiable on-chain assets.
 
-
 🚀 Vision
-在去中心化协作中，最大的障碍是共识的模糊性。Wishbox 通过引入 AI Agent 需求量化与地址隐私技术，让用户能够在保护隐私的前提下，将模糊的愿望转化为具备明确验证标准（Proof of Completion）的 Solana 链上任务。
+In decentralized collaboration, the greatest obstacle is the ambiguity of consensus. Wishbox introduces AI-Agentic requirement scoping and address privacy technology, enabling users to transform fuzzy "wishes" into Solana-based tasks with crystal-clear Proof of Completion—all while protecting their primary identity.
 
-🤖 核心能力：AI-Agentic Task Verification
-不同于简单的愿望清单，Wishbox 集成了一个 AI Task Architect (基于 Claude 3.5)，它充当了“需求工程师”的角色：
+🤖 Core Capability: AI-Agentic Task Verification
+Beyond a simple wishlist, Wishbox integrates an AI Task Architect (powered by Claude 3.5) that acts as a "Requirement Engineer":
 
-去模糊化 (De-ambiguation)：自动识别并修正用户输入中的含糊词汇。
+De-ambiguation: Automatically identifies and refines vague terminology in user inputs.
 
-验证标准定义 (Verification Evidence)：为每个愿望自动生成明确的验证证据清单（如：GitHub PR、链上交易、特定格式截图）。
+Verification Evidence: Generates a precise checklist of required evidence for each wish (e.g., GitHub PRs, on-chain transaction hashes, specific screenshots).
 
-任务拆解 (Decomposition)：将复杂的宏大愿望拆解为 3-4 个可执行的 Milestone，大幅降低执行者的理解门槛。
+Task Decomposition: Breaks down complex, grand visions into 3-4 executable Actionable Specs, significantly lowering the barrier for contributors.
 
-审计报告 (Cyber-Audit)：在愿望上链前，AI 会给出清晰度评分（Clarity Score），确保任务是“可结算的”。
+Cyber-Audit: Before a wish is anchored on-chain, the AI provides a Clarity Score to ensure the task is "settable" and verifiable.
 
-🔒 隐私保护：Address Privacy
-为了确保用户在表达需求时无需暴露其核心财务身份，我们实现了 Ephemeral Wallet (影子钱包) 逻辑：
+🔒 Privacy Protection: Address Privacy
+To ensure users can express needs without exposing their core financial identity, we have implemented Identity Abstraction via Ephemeral (Shadow) Wallets:
 
-身份解耦：支持一键生成本地临时密钥对。
+Identity Decoupling: Supports one-click generation of local, temporary keypairs.
 
-按需注资：主钱包仅需通过一次签名注入微量 Gas。
+On-Demand Funding: The primary wallet injects a tiny amount of Gas via a single signature to the shadow address.
 
-匿名发布：愿望以匿名地址发布，在确保链上透明性的同时，切断了行为与主钱包的直接关联。
+Anonymous Publishing: Wishes are published using anonymous addresses. This ensures on-chain transparency while severing the direct link between user behavior and their primary wallet.
 
-🛠️ 技术栈 (Tech Stack)
+🛠️ Tech Stack
 Frontend: Next.js (App Router) + Tailwind CSS + Framer Motion
 
-Smart Contract: Anchor Framework (Rust) on Solana
+Smart Contract: Anchor Framework (Rust) on Solana Devnet
 
 AI Infrastructure: Claude-3.5-Sonnet (Requirement Scoping & Audit)
 
 Wallet: Solana Wallet Adapter (Phantom Support)
 
-Deployment: Vercel (Frontend) & Solana Devnet (Program)
+Deployment: Vercel (Frontend) & Solana Blockchain (Program)
 
-📥 快速启动 (Quick Start)
-1. 克隆并安装依赖
+📥 Quick Start
+1. Clone and Install Dependencies
 Bash
 git clone https://github.com/futureclover87/wishbox-solana.git
 cd wishbox-solana
 npm install --legacy-peer-deps
-2. 配置环境变量
-在根目录创建 .env.local：
+2. Configure Environment Variables
+Create a .env.local file in the root directory:
 
 代码段
 NEXT_PUBLIC_RPC_URL=https://api.devnet.solana.com
 ANTHROPIC_API_KEY=your_api_key_here
-3. 本地开发
+3. Local Development
 Bash
 npm run dev
-访问 http://localhost:3000，连接 Phantom (切换至 Devnet) 并开启 "Privacy Mode" 进行体验。
+Visit http://localhost:3000, connect your Phantom wallet (switch to Devnet), and toggle "Privacy Mode" to start the experience.
 
-🔗 入口与资源
+🔗 Resources & Entry Points
 Live Demo: v0-wishbox-solana.vercel.app
 
 Smart Contract: programs/workspace/src/lib.rs
@@ -63,3 +62,5 @@ Smart Contract: programs/workspace/src/lib.rs
 AI Logic: pages/api/scoping.ts
 
 [Continue working on v0 →](https://v0.app/chat/projects/prj_33GJxY5B5TOCb3UJkUmE9mPdV83t)
+
+Built for the Solana Global Task Economy.
